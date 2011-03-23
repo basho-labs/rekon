@@ -1,0 +1,3 @@
+#Rekon
+
+Visual Browser for Basho's data store, riak, built as a riak app.
