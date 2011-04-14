@@ -1,0 +1,51 @@
+<div id='bucket-props'> 
+  <table> 
+    <thead> 
+      <tr> 
+        <th colspan='8'></th> 
+        <th colspan='2'>Linkfun</th> 
+        <th colspan='2'>Chash Keyfun</th> 
+        <th colspan='4'>VClock</th> 
+      </tr> 
+      <tr> 
+        <th>Name</th> 
+        <th>W</th> 
+        <th>R</th> 
+        <th>RW</th> 
+        <th>DW</th> 
+        <th>N Val</th> 
+        <th>Allow Multi</th> 
+        <th>Last Write</th> 
+        <th>Mod</th> 
+        <th>Fun</th> 
+        <th>Mod</th> 
+        <th>Fun</th> 
+        <th>Small</th> 
+        <th>Big</th> 
+        <th>Young</th> 
+        <th>Old</th> 
+      </tr> 
+    </thead> 
+    <tbody> 
+      <tr> 
+        <td><%= props.name %></td> 
+        <td><%= props.w %></td> 
+        <td><%= props.r %></td> 
+        <td><%= props.rw %></td> 
+        <td><%= props.dw %></td> 
+        <td><%= props.n_val %></td> 
+        <td><%= props.allow_mult %></td> 
+        <td><%= props.last_write_wins %></td> 
+        <td><%= props.linkfun.mod %></td> 
+        <td><%= props.linkfun.fun %></td> 
+        <td><%= props.chash_keyfun.mod %></td> 
+        <td><%= props.chash_keyfun.fun %></td> 
+        <td><%= props.small_vclock %></td> 
+        <td><%= props.big_vclock %></td> 
+        <td><%= props.young_vclock %></td> 
+        <td><%= props.old_vclock %></td> 
+      </tr> 
+    </tbody> 
+  </table> 
+</div> 
+
