@@ -13,11 +13,11 @@ echo "Installing rekon to $node..."
 for f in $(ls app); do
   echo "Uploading $f to riak"
   case $f in
+    go | *.html )
+      content_type="text/html"
+      ;;
     *.js )
       content_type="application/javascript"
-      ;;
-    *.html )
-      content_type="text/html"
       ;;
     *.css )
       content_type="text/css"

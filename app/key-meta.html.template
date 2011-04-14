@@ -1,0 +1,37 @@
+<tr> 
+  <th>Content Type</th> 
+  <td> 
+    <pre><%= object.contentType %></pre> 
+  </td> 
+</tr> 
+<tr> 
+  <th>VClock</th> 
+  <td> 
+    <pre><%= object.vectorClock %></pre> 
+  </td> 
+</tr> 
+<tr> 
+  <th>ETag</th> 
+  <td> 
+    <pre><%= object.etag %></pre> 
+  </td> 
+</tr> 
+<tr> 
+  <th>Last Modified</th> 
+  <td> 
+    <pre><%= object.lastModified %></pre> 
+  </td> 
+</tr> 
+<tr> 
+  <th>Links</th> 
+  <td> 
+    <pre><%= JSON.stringify(object.links) %></pre> 
+  </td> 
+</tr> 
+<tr>
+  <td colspan='2' class="no-highlight">
+    <br/>
+    <pre><%= object.body %></pre>
+  </td>
+</tr>
+

@@ -1,0 +1,11 @@
+<br/>
+<div id="hooks">
+  <p> 
+    <b>Pre Commit</b> 
+    <%= pre_commit %>
+  </p> 
+  <p> 
+    <b>Post Commit</b> 
+    <%= post_commit %>
+  </p> 
+</div>

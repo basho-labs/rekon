@@ -1,0 +1,29 @@
+<div id="buckets" class="screen">
+  <table> 
+    <thead> 
+      <tr> 
+        <th></th> 
+        <th>View</th> 
+        <th>Riak</th> 
+      </tr> 
+    </thead> 
+    <tbody> 
+    </tbody> 
+    <tfoot> 
+      <tr> 
+        <td colspan='3'> 
+          <form action='#' method='post'> 
+            <label for='new_bucket'>New Bucket</label> 
+            <input id='new_bucket' name='bucket' type='text' /> 
+            <button type='submit'>Add</button> 
+          </form> 
+        </td> 
+      </tr> 
+    </tfoot> 
+  </table> 
+  <br /> 
+  <p class='help'> 
+    To delete a bucket, you must remove all of its keys.  Then
+    <a href="#">reload buckets</a>.
+  </p> 
+</div>

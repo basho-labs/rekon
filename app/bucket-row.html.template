@@ -1,0 +1,11 @@
+<tr>
+  <th>
+    <em><%= Rekon.baseUrl() %></em><%= bucket %>
+  </th>
+  <td> 
+    <a href="#/buckets/<%= bucket %>" class="view icon">View</a>
+  </td> 
+  <td> 
+    <a href="<%= Rekon.riakUrl(bucket) %>" class="riak icon" target="_blank">Riak</a>
+  </td> 
+</tr>

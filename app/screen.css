@@ -20,10 +20,6 @@ abbr,acronym{border:0;}
   width:940px;
 }
 
-.screen {
-  display: none;
-}
-
 #home {
   position:absolute;
     right:5px;
@@ -92,7 +88,7 @@ table thead th {
   background:#dfdfdf;
 }
 
-table tbody th {
+table tbody th{
   background:#eaeaea;
 }
 
@@ -105,6 +101,10 @@ table tbody td.no-results {
 table:not(.CodeRay) tbody tr:hover th, table:not(.CodeRay) tbody tr:hover td {
   background:#ffd;
 }
+
+table tbody tr:hover td.no-highlight {
+  background:none;
+}  
 
 pre, code {
   font-family: 'DejaVu Sans Mono', Monaco, 'Courier New';

@@ -1,11 +1,28 @@
-<tr>
-  <th>
-    <em><%= Rekon.baseUrl() %></em><%= bucket %>
-  </th>
-  <td> 
-    <a href="#/buckets/<%= bucket %>" class="view icon">View</a>
-  </td> 
-  <td> 
-    <a href="<%= Rekon.riakUrl(bucket) %>" class="riak icon" target="_blank">Riak</a>
-  </td> 
-</tr>
+<div id="bucket" class="screen">
+  <table> 
+    <thead> 
+      <tr> 
+        <th></th> 
+        <th>View</th> 
+        <th>Riak</th> 
+        <th>Edit</th> 
+        <th>Delete</th> 
+      </tr> 
+    </thead> 
+    <tbody>
+    </tbody>
+    <tfoot> 
+      <tr> 
+        <td colspan='5'> 
+          <form action='#' method='post'> 
+            <label for='new_key'>New Key</label> 
+            <input id='new_key' name='key' type='text' /> 
+            <button type='submit'>Add</button> 
+            <em class='hint'>Leave it blank to let riak choose the key</em> 
+          </form> 
+        </td> 
+      </tr> 
+    </tfoot> 
+  </table>
+</div>
+

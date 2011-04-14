@@ -333,6 +333,8 @@ RiakObject.fromRequest = function(bucket, key, client, req) {
   var body = req.responseText;
   var retval = new RiakObject(bucket, key, client, body, contentType, vclock);
   retval.setLinks(linkHeader);
+  retval.etag = req.getResponseHeader('Etag');
+  retval.lastModified = req.getResponseHeader('Last-Modified');
   return retval;
 };
 
@@ -739,7 +741,8 @@ RiakBucket.prototype.store = function(callback) {
  * @param key - Riak bucket key
  * @param callback - Function to call when op has completed
  *
- * callback - function(object, request)
+ * callback - function(status, object, request)
+ * @param status - text status
  * @param object - RiakObject if found, otherwise null
  * @param request - XMLHTTPRequest object
  */
