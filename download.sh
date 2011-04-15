@@ -16,6 +16,7 @@ cd -
 echo
 echo "Install Completed!"
 if [ $OSTYPE == 'darwin10.0' ]; then
+  echo "Opening http://127.0.0.1:8098/riak/rekon/go#/buckets"
   open "http://127.0.0.1:8098/riak/rekon/go#/buckets"
 else
   echo
