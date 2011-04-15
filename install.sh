@@ -11,7 +11,7 @@ riak_url="http://$node/riak/rekon"
 echo "Installing rekon to $node..."
 
 for f in $(ls app); do
-  echo "Uploading $f to riak"
+  # echo "Uploading $f to riak"
   case $f in
     go | *.html )
       content_type="text/html"

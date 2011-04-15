@@ -4,4 +4,4 @@ Visual browser for Basho's data store, riak, built as a riak app.
 
 ##Goals
 1. Install locally using `./install.sh`
-2. Download and install using `curl https://github.com/adamhunter/rekon/raw/master/download.sh | sh`
+2. Download and install using `curl -s https://github.com/adamhunter/rekon/raw/master/download.sh | sh`
