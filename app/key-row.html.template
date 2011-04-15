@@ -12,6 +12,6 @@
     <a href="#/buckets/<%= bucket %>/<%= key %>/edit" class="edit icon">Edit</a> 
   </td> 
   <td> 
-    <a href="#/buckets/<%= bucket %>/<%= key %>" class="delete icon">Delete</a>
+    <a href="<%= Rekon.riakUrl(bucket + '/' + key) %>" class="delete icon">Delete</a>
   </td> 
 </tr> 

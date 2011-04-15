@@ -1,10 +1,13 @@
 <tr> 
   <th>Content Type</th> 
   <td> 
-    <select>
+    <select name="content-type">
       <option value='application/json'> 
         application/json
       </option> 
+      <option value='application/octet-stream'>
+        application/octet-stream
+      </option>
       <option value='application/xml'> 
         application/xml
       </option> 
