@@ -63,6 +63,10 @@ body {
 }
 
 #key {
+  overflow-x:auto;
+}
+
+#value {
   border: 1px solid #ccc;
   margin:15px 0;
   padding:10px;

@@ -67,7 +67,23 @@ rekonApp = Sammy('#container', function(){
     context.render('key.html.template').appendTo('#main');
 
     bucket.get(key, function(status, object) {
-      context.render('key-table.html.template', {object: object}).appendTo('#key tbody');
+      context.render('key-meta.html.template', {object: object}).appendTo('#key tbody');
+
+      switch(object.contentType) {
+      case 'image/png':
+      case 'image/jpeg':
+      case 'image/jpg':
+      case 'image/gif':
+        context.render('value-image.html.template', {bucket: name, key: key}).appendTo('#value');
+        return;
+      case 'application/json':
+        value = JSON.stringify(object.body, null, 4);
+        break;
+      default:
+        value = object.body;
+        break;
+      }
+      context.render('value-pre.html.template', {value: value}).appendTo('#value');
     });
   });
 

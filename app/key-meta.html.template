@@ -28,11 +28,3 @@
     <pre><%= JSON.stringify(object.links) %></pre> 
   </td> 
 </tr> 
-<tr>
-  <td colspan='2' class="no-highlight">
-    <br/>
-    <pre><%= object.body %></pre>
-    <br/>
-  </td>
-</tr>
-
