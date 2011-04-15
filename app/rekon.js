@@ -31,6 +31,11 @@ rekonApp = Sammy('#container', function(){
     });
   });
 
+  this.post('#/buckets', function(context) {
+    var name = this.params['bucket'];
+    this.redirect('#/buckets/' + name);
+  });
+
   this.get('#/buckets/:bucket', function(context){
     var name   = this.params['bucket'];
     var bucket = new RiakBucket(name, Rekon.client);
@@ -40,9 +45,13 @@ rekonApp = Sammy('#container', function(){
     context.render('bucket.html.template', {bucket: name}).appendTo('#main');
 
     bucket.keys(function(keys) {
-      $.each(keys, function(i, key) {
-        context.render('key-row.html.template', {bucket: name, key: key}).appendTo('#keys tbody');
-      });
+      if (keys.length > 0) {
+        $.each(keys, function(i, key) {
+          context.render('key-row.html.template', {bucket: name, key: key}).appendTo('#keys tbody');
+        });
+      } else {
+        context.render('bucket-empty.html.template').appendTo('#keys tbody');
+      }
     });
 
     bucket.getProps(function(props) {

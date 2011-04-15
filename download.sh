@@ -15,4 +15,9 @@ cd /tmp/rekon
 cd -
 echo
 echo "Install Completed!"
-open "http://127.0.0.1:8098/riak/rekon/go#/buckets"
+if [ $OSTYPE == 'darwin10.0' ]; then
+  open "http://127.0.0.1:8098/riak/rekon/go#/buckets"
+else
+  echo
+  echo "Visit http://127.0.0.1:8098/riak/rekon/go in your browser"
+fi
