@@ -32,6 +32,7 @@
   <td colspan='2' class="no-highlight">
     <br/>
     <pre><%= object.body %></pre>
+    <br/>
   </td>
 </tr>
 

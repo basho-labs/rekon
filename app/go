@@ -17,7 +17,7 @@
         <a href='#'>rekon <code>0.5.0</code></a> 
       </div> 
       <div id='content'> 
-        <h1><!-- Header --></h1>
+        <h1></h1>
         <div id='main'></div>
         <ul id='footer-navi'>
           <li>

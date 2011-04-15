@@ -1,5 +1,5 @@
 <div id="bucket" class="screen">
-  <table> 
+  <table id="keys"> 
     <thead> 
       <tr> 
         <th></th> 

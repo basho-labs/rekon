@@ -4,6 +4,7 @@ rekonApp = Sammy('#container', function(){
 
   this.before(function(){
     $('#main').empty();
+    $('#content h1').html('');
     $('#footer-navi li:not(:first)').remove();
   });
 
@@ -36,11 +37,11 @@ rekonApp = Sammy('#container', function(){
     
     header('Bucket', Rekon.riakUrl(name));
 
-    context.render('bucket.html.template');
+    context.render('bucket.html.template').appendTo('#main');
 
     bucket.keys(function(keys) {
       $.each(keys, function(i, key) {
-        context.render('key-row.html.template', {bucket: name, key: key}).appendTo('#bucket tbody');
+        context.render('key-row.html.template', {bucket: name, key: key}).appendTo('#keys tbody');
       });
     });
 
@@ -58,16 +59,16 @@ rekonApp = Sammy('#container', function(){
   this.get('#/buckets/:bucket/:key', function(context) {
     var name   = this.params['bucket'];
     var key    = this.params['key'];
-    var tbody  = setupContent('#key');
     var bucket = new RiakBucket(name, Rekon.client);
+    
     header('Key', Rekon.riakUrl(name + '/' + key));
+    breadcrumb($('<a>').attr('href', '#/buckets/' + name).text('Keys'));
+
+    context.render('key.html.template').appendTo('#main');
 
     bucket.get(key, function(status, object) {
-      console.log(object);
-      context.render('key-meta.html.template', {object: object}).appendTo(tbody);
+      context.render('key-table.html.template', {object: object}).appendTo('#key tbody');
     });
-
-    breadcrumb($('<a>').attr('href', '#/buckets/' + name).text('Keys'));
   });
 
 });
