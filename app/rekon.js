@@ -63,10 +63,14 @@ rekonApp = Sammy('#container', function(){
     
     header('Key', Rekon.riakUrl(name + '/' + key));
     breadcrumb($('<a>').attr('href', '#/buckets/' + name).text('Keys'));
+    breadcrumb($('<a>').attr('href', '#/buckets/' + name + '/' + key + '/edit').text('Edit').addClass('action'));
+    breadcrumb($('<a>').attr('href', Rekon.riakUrl(name + '/' + key)).attr('target', '_blank').
+      text('Riak').addClass('action'));
 
     context.render('key.html.template').appendTo('#main');
 
     bucket.get(key, function(status, object) {
+      context.render('key-content-type.html.template', {object: object}).appendTo('#key tbody');
       context.render('key-meta.html.template', {object: object}).appendTo('#key tbody');
 
       switch(object.contentType) {
@@ -84,6 +88,42 @@ rekonApp = Sammy('#container', function(){
         break;
       }
       context.render('value-pre.html.template', {value: value}).appendTo('#value');
+    });
+  });
+
+  this.get('#/buckets/:bucket/:key/edit', function(context) {
+    var name   = this.params['bucket'];
+    var key    = this.params['key'];
+    var bucket = new RiakBucket(name, Rekon.client);
+    var app    = this;
+
+    header('Edit Key', Rekon.riakUrl(name + '/' + key));
+    breadcrumb($('<a>').attr('href', '#/buckets/' + name).text('Keys'));
+    breadcrumb($('<a>').attr('href', '#/buckets/' + name + '/' + key).text('View').addClass('action'));
+    breadcrumb($('<a>').attr('href', Rekon.riakUrl(name + '/' + key)).attr('target', '_blank').
+      text('Riak').addClass('action'));
+
+    context.render('edit-key.html.template').appendTo('#main');
+
+    bucket.get(key, function(status, object) {
+      switch(object.contentType) {
+      case 'image/png':
+      case 'image/jpeg':
+      case 'image/jpg':
+      case 'image/gif':
+        alert('Image editing is not supported currently.');
+        app.redirect('#/buckets/' + name + '/' + key);
+        return;
+      case 'application/json':
+        value = JSON.stringify(object.body, null, 4);
+        break;
+      default:
+        value = object.body;
+        break;
+      }
+      context.render('edit-key-content-type.html.template', {object: object}).appendTo('#edit-key tbody');
+      context.render('key-meta.html.template', {object: object}).appendTo('#edit-key tbody');
+      context.render('edit-value.html.template', {value: value}).appendTo('#edit-value');
     });
   });
 

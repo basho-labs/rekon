@@ -1,13 +1,7 @@
 <tr> 
-  <th>Content Type</th> 
-  <td> 
-    <pre><%= object.contentType %></pre> 
-  </td> 
-</tr> 
-<tr> 
   <th>VClock</th> 
   <td> 
-    <pre><%= object.vectorClock %></pre> 
+    <pre><%= object.vclock %></pre> 
   </td> 
 </tr> 
 <tr> 

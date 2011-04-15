@@ -62,8 +62,12 @@ body {
   font-size:0.8em;
 }
 
-#key {
+#key, #edit-key{
   overflow-x:auto;
+}
+
+#key th, #edit-key th{
+  min-width:100px;
 }
 
 #value {
