@@ -330,6 +330,9 @@ RiakObject.fromRequest = function(bucket, key, client, req) {
   var contentType = req.getResponseHeader('Content-Type');
   var vclock = req.getResponseHeader('X-Riak-Vclock');
   var linkHeader = req.getResponseHeader('Link');
+  if (req.getResponseHeader('Location')) {
+    key = req.getResponseHeader('Location').split('/').pop();
+  }
   var body = req.responseText;
   var retval = new RiakObject(bucket, key, client, body, contentType, vclock);
   retval.setLinks(linkHeader);
@@ -530,6 +533,7 @@ RiakObject.prototype.store = function(callback) {
   if (this.contentType === null) {
     throw('RiakObject missing contentType');
   }
+  var url, method;
   var object = this;
   var objectData = null;
   if (this.contentType === 'application/json') {
@@ -543,8 +547,15 @@ RiakObject.prototype.store = function(callback) {
   else {
     objectData = this.body;
   }
-  jQuery.ajax({url: this.client._buildPath('PUT', this.bucket, this.key),
-    type: 'PUT',
+  if (this.key === undefined || this.key === null) {
+    url = this.client._buildPath('POST', this.bucket);
+    method = 'POST';
+  } else {
+    url = this.client._buildPath('PUT', this.bucket, this.key);
+    method = 'PUT';
+  }
+  jQuery.ajax({url: url,
+    type: method,
     data: objectData,
     contentType: this.contentType,
           accepts: RiakUtil.multipart_accepts(),
@@ -567,7 +578,7 @@ RiakObject.prototype._store = function(req, callback) {
     return;
   }
   if (callback !== undefined && callback !== null) {
-    if (req.status == 200 || req.status == 204) {
+    if (req.status == 200 || req.status == 201 || req.status == 204) {
       callback('ok', RiakObject.fromRequest(this.bucket, this.key, this.client, req), req);
     }
     /* Uh-oh, we've got siblings! */
@@ -974,6 +985,9 @@ RiakClient.prototype._buildPath = function(method, bucket, key) {
     path = path + "?" + cache_breaker;
     if (method === 'GET') {
       path = path + '&keys=false';
+    }
+    else if (method === 'POST') {
+      path = path + '&returnbody=true';
     }
   }
   return path;

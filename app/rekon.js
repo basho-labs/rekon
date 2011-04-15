@@ -37,7 +37,7 @@ rekonApp = Sammy('#container', function(){
     
     header('Bucket', Rekon.riakUrl(name));
 
-    context.render('bucket.html.template').appendTo('#main');
+    context.render('bucket.html.template', {bucket: name}).appendTo('#main');
 
     bucket.keys(function(keys) {
       $.each(keys, function(i, key) {
@@ -53,6 +53,28 @@ rekonApp = Sammy('#container', function(){
       if(post_commit === "") {post_commit = "None";}
       context.render('bucket-hooks.html.template', {pre_commit: pre_commit, post_commit: post_commit}).appendTo('#bucket');
       context.render('bucket-props.html.template', {props: props}).appendTo('#bucket');
+    });
+  });
+
+  this.post('#/buckets/:bucket', function(context){
+    var app    = this;
+    var name   = this.params['bucket'];
+    var key    = this.params['key'] === '' ? undefined : this.params['key'];
+    var object = new RiakObject(name, key, Rekon.client, '{}', 'application/json');
+    object.store(function(status, rObject){
+      switch(status) {
+      case 'siblings':
+        alert("Oh noes! Siblings have been born and Rekon doesn't handle that yet.");
+        break;
+      case 'failure':
+        alert("There was an error creating a new Riak object.");
+        break;
+      case 'ok':
+      default:
+        console.log(rObject);
+        app.redirect('#/buckets/' + name + '/' + rObject.key);
+        break;
+      }
     });
   });
 
