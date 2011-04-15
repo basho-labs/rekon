@@ -1,0 +1,12 @@
+<table> 
+  <tbody> 
+    <% for (var key in stats) { %>
+    <tr> 
+      <th><%= key %></th> 
+      <td> 
+        <code><%= typeof stats[key] == 'string' ? stats[key] : JSON.stringify(stats[key]) %></code> 
+      </td> 
+    </tr> 
+    <% } %>
+  </tbody>
+</table>

@@ -5,7 +5,7 @@ rekonApp = Sammy('#container', function(){
   this.before(function(){
     $('#main').empty();
     $('#content h1').html('');
-    $('#footer-navi li:not(:first)').remove();
+    $('#footer-navi li:not(.perm)').remove();
   });
 
   $container = $(this.$element);
@@ -20,7 +20,6 @@ rekonApp = Sammy('#container', function(){
 
   this.get('#/buckets', function(context){
     header('Buckets', Rekon.baseUrl());
-    breadcrumb($('<a>').attr('href', '#').addClass('action').text('Reload Buckets'));
 
     context.render('buckets.html.template').appendTo('#main');
     
@@ -54,15 +53,6 @@ rekonApp = Sammy('#container', function(){
       }
     });
 
-    bucket.getProps(function(props) {
-      var pre_commit, post_commit;
-      pre_commit  = props.precommit.join(",");
-      post_commit = props.postcommit.join(",");
-      if(pre_commit === "") {pre_commit = "None";}
-      if(post_commit === "") {post_commit = "None";}
-      context.render('bucket-hooks.html.template', {pre_commit: pre_commit, post_commit: post_commit}).appendTo('#bucket');
-      context.render('bucket-props.html.template', {props: props}).appendTo('#bucket');
-    });
   });
 
   this.post('#/buckets/:bucket', function(context){
@@ -84,6 +74,23 @@ rekonApp = Sammy('#container', function(){
         app.redirect('#/buckets/' + name + '/' + rObject.key);
         break;
       }
+    });
+  });
+
+  this.get('#/buckets/:bucket/props', function(context) {
+    var name   = this.params['bucket'];
+    var bucket = new RiakBucket(name, Rekon.client);
+    
+    header('Bucket Properties', Rekon.riakUrl(name));
+
+    bucket.getProps(function(props) {
+      var pre_commit, post_commit;
+      pre_commit  = props.precommit.join(",");
+      post_commit = props.postcommit.join(",");
+      if(pre_commit === "") {pre_commit = "None";}
+      if(post_commit === "") {post_commit = "None";}
+      context.render('bucket-hooks.html.template', {pre_commit: pre_commit, post_commit: post_commit}).appendTo('#main');
+      context.render('bucket-props.html.template', {props: props}).appendTo('#main');
     });
   });
 
@@ -187,6 +194,14 @@ rekonApp = Sammy('#container', function(){
           break;
         }
       });
+    });
+  });
+
+  this.get('#/stats', function(context){
+    header('Node Stats', document.location.origin + "/stats");
+
+    $.getJSON('/stats', function(data) {
+      context.render('stats.html.template', {stats:data}).appendTo('#main');
     });
   });
 
