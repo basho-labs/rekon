@@ -211,7 +211,7 @@ Rekon = {
   client : new RiakClient(),
 
   baseUrl : function() {
-    return document.location.origin + this.client.baseUrl;
+    return document.location.protocol + '//' + document.location.host + this.client.baseUrl;
   },
 
   riakUrl : function(append) {
