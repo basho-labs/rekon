@@ -214,6 +214,20 @@ rekonApp = Sammy('#container', function(){
     });
   });
 
+  this.get('#/cluster', function(context){
+    header('Cluster', 'Ring Members');
+
+    $.getJSON('/stats', function(data) {
+      nodeRows = data.ring_members.map(function(member){
+        var row     = {member: member};
+        row.name    = member.split('@')[0];
+        row.address = member.split('@')[0];
+        return row;
+      });
+      context.render('cluster.html.template', {stats: data, rows: nodeRows}).appendTo('#main');
+    });
+  });
+
 });
 
 Rekon = {

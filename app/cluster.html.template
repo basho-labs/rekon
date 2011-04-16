@@ -1,0 +1,16 @@
+<div id="cluster">
+  <table>
+    <thead>
+      <tr>
+        <th>Ring Members</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (var i in rows) { %>
+      <tr>
+        <th><%= rows[i].member %></th>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
