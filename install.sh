@@ -25,6 +25,9 @@ for f in $(ls app); do
     *.png )
       content_type="image/png"
       ;;
+    *.gif )
+      content_type="image/gif"
+      ;;
     *.template )
       content_type="application/x-sammy-template"
       ;;

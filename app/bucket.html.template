@@ -2,7 +2,10 @@
   <table id="keys"> 
     <thead> 
       <tr> 
-        <th></th> 
+        <th>
+          <input id="row_search" type="text" />
+          <em class="hint">Type to filter rows</em>
+        </th> 
         <th>View</th> 
         <th>Riak</th> 
         <th>Edit</th> 

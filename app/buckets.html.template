@@ -2,7 +2,10 @@
   <table> 
     <thead> 
       <tr> 
-        <th></th> 
+        <th>
+          <input id="row_search" type="text" />
+          <em class="hint">filter results</em>
+        </th> 
         <th>Keys</th> 
         <th>Props</th>
         <th>Riak</th> 

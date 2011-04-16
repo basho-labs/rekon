@@ -51,6 +51,14 @@ table th, table td {
   overflow-x:scroll;
 }
 
+#bucket tbody th {
+  min-width:500px;
+}
+
+#stats th {
+  min-width:250px;
+}
+
 /* Typography and Colors */
 body {
   background:#333;
@@ -235,6 +243,11 @@ label[for=edit_key] {
   font-weight:bold;
   font-size:1.4em;
   padding:4px;
+}
+
+label[for=row_search] {
+  color:#686868;
+  font-weight:normal;
 }
 
 #edit_key {

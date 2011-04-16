@@ -1,13 +1,5 @@
 rekonApp = Sammy('#container', function(){
 
-  this.use('Template');
-
-  this.before(function(){
-    $('#main').empty();
-    $('#content h1').html('');
-    $('#footer-navi li:not(.perm)').remove();
-  });
-
   $container = $(this.$element);
 
   header = function(header, url) {
@@ -18,15 +10,28 @@ rekonApp = Sammy('#container', function(){
     $('<li>').append(crumb).appendTo('ul#footer-navi');
   };
 
+  searchable = function(selector) {
+    $('#row_search').quicksearch(selector, {selector: 'th'});
+  };
+  
+  this.use('Template');
+
+  this.before(function(){
+    $('#main').empty();
+    $('#content h1').html('');
+    $('#footer-navi li:not(.perm)').remove();
+  });
+
   this.get('#/buckets', function(context){
     header('Buckets', Rekon.baseUrl());
 
     context.render('buckets.html.template').appendTo('#main');
     
     Rekon.client.buckets(function(buckets) {
-      $.each(buckets, function(i, bucket) {
-        context.render('bucket-row.html.template', {bucket: bucket}).appendTo('#buckets tbody');
-      });
+      bucketRows = buckets.map(function(bucket){ return {bucket: bucket};});
+      context.renderEach('bucket-row.html.template', bucketRows).appendTo('#buckets tbody').then(
+        function(){ searchable('#buckets table tbody tr'); }
+      );
     });
   });
 
@@ -45,13 +50,15 @@ rekonApp = Sammy('#container', function(){
 
     bucket.keys(function(keys) {
       if (keys.length > 0) {
-        $.each(keys, function(i, key) {
-          context.render('key-row.html.template', {bucket: name, key: key}).appendTo('#keys tbody');
-        });
+        keyRows = keys.map(function(key) { return {bucket:name, key:key}; });
+        context.renderEach('key-row.html.template', keyRows).appendTo('#keys tbody').then(
+          function(){ searchable('#bucket table tbody tr'); }
+        );
       } else {
         context.render('bucket-empty.html.template').appendTo('#keys tbody');
       }
     });
+
 
   });
 
@@ -201,7 +208,9 @@ rekonApp = Sammy('#container', function(){
     header('Node Stats', document.location.origin + "/stats");
 
     $.getJSON('/stats', function(data) {
-      context.render('stats.html.template', {stats:data}).appendTo('#main');
+      context.render('stats.html.template', {stats:data}).appendTo('#main').then(
+        function(){ searchable('#stats tbody tr'); }
+      );
     });
   });
 
@@ -238,9 +247,11 @@ $('#keys a.delete').live('click', function(e){
   });
 });
 
+
 /*
 * Bootstrap the application
 */
 jQuery(function($) {
   rekonApp.run('#/buckets');
+
 });
