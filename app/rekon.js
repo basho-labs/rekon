@@ -29,7 +29,7 @@ rekonApp = Sammy('#container', function(){
     
     Rekon.client.buckets(function(buckets) {
       bucketRows = buckets.map(function(bucket){ return {bucket: bucket};});
-      context.renderEach('bucket-row.html.template', bucketRows).appendTo('#buckets tbody').then(
+      context.renderEach('bucket-row.html.template', bucketRows).replace('#buckets tbody').then(
         function(){ searchable('#buckets table tbody tr'); }
       );
     });
@@ -51,7 +51,7 @@ rekonApp = Sammy('#container', function(){
     bucket.keys(function(keys) {
       if (keys.length > 0) {
         keyRows = keys.map(function(key) { return {bucket:name, key:key}; });
-        context.renderEach('key-row.html.template', keyRows).appendTo('#keys tbody').then(
+        context.renderEach('key-row.html.template', keyRows).replace('#keys tbody').then(
           function(){ searchable('#bucket table tbody tr'); }
         );
       } else {

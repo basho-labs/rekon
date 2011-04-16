@@ -12,6 +12,13 @@
       </tr> 
     </thead> 
     <tbody> 
+      <tr class="pending">
+        <td colspan='5'>
+          <p class="spinner">
+            <img src="spinner.gif" alt="Loading..." />
+            Loading Buckets... <em class="hint">(This may take a minute)</em>
+          </p>
+      </tr>
     </tbody> 
     <tfoot> 
       <tr> 

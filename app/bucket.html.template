@@ -13,6 +13,13 @@
       </tr> 
     </thead> 
     <tbody>
+      <tr class="pending">
+        <td colspan='5'>
+          <p class="spinner">
+            <img src="spinner.gif" alt="Loading..." />
+            Loading Keys... <em class="hint">(This may take a minute if you have a lot)</em>
+          </p>
+      </tr>
     </tbody>
     <tfoot> 
       <tr> 
