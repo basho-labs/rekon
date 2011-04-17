@@ -70,7 +70,7 @@ body {
   font-size:0.8em;
 }
 
-#key, #edit-key{
+#key, #edit-key, #stats{
   overflow-x:auto;
 }
 
