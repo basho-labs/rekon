@@ -55,7 +55,7 @@ rekonApp = Sammy('#container', function(){
           function(){ searchable('#bucket table tbody tr'); }
         );
       } else {
-        context.render('bucket-empty.html.template').appendTo('#keys tbody');
+        context.render('bucket-empty.html.template').replace('#keys tbody');
       }
     });
 
@@ -186,6 +186,10 @@ rekonApp = Sammy('#container', function(){
     bucket.get(key, function(status, object) {
       object.contentType = app.params['content-type'];
       object.body        = app.params['value'];
+
+      if (object.contentType == 'application/json') {
+        object.body = JSON.parse(object.body);
+      }
 
       object.store(function(status, rObject) {
         switch(status) {
