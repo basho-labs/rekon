@@ -9,7 +9,7 @@
     <tbody>
       <tr>
         <th>Name</th> 
-        <td><%= props.name %></td> 
+        <td><code><%= props.name %></code></td> 
       </tr>
       <tr>
         <th>W</th> 
@@ -28,48 +28,68 @@
         <td><%= props.dw %></td> 
       </tr>
       <tr>
-        <th>N Val</th> 
-        <td><%= props.n_val %></td> 
+        <th>N Value</th> 
+        <td>
+          <input type="text" value="<%= props.n_val %>" /> replicas
+        </td> 
       </tr>
       <tr>
         <th>Allow Multi</th> 
-        <td><%= props.allow_mult %></td> 
+        <td>
+          <!-- <%= props.allow_mult %> -->
+          <input type="checkbox" value="1" <%= props.allow_muli ? 'checked=checked' : '' %> />
+        </td> 
       </tr>
       <tr>
         <th>Last Write</th> 
-        <td><%= props.last_write_wins %></td> 
+        <td>
+          <!-- <%= props.last_write_wins %> -->
+          <input type="checkbox" value="1" <%= props.last_write_wins ? 'checked=checked' : '' %> />
+        </td>
       </tr>
       <tr>
-        <th>Linkfun Mod</th> 
-        <td><%= props.linkfun.mod %></td> 
+        <th>Linkfun</th> 
+        <td>
+          <code>
+            <%= props.linkfun.mod %>:<%= props.linkfun.fun %>
+          </code>
+        </td>
       </tr>
       <tr>
-        <th>Linkfun Fun</th> 
-        <td><%= props.linkfun.fun %></td> 
+        <th>Chash Keyfun</th> 
+        <td>
+          <code>
+            <%= props.chash_keyfun.mod %>:<%= props.chash_keyfun.fun %>
+          </code>
+        </td>
       </tr>
       <tr>
-        <th>Chash Keyfun Mod</th> 
-        <td><%= props.chash_keyfun.mod %></td> 
+        <th>Vector Clock Small</th> 
+        <td>
+          <input type="text" value="<%= props.small_vclock %>" />
+          updates
+        </td> 
       </tr>
       <tr>
-        <th>Chash Keyfun Fun</th> 
-        <td><%= props.chash_keyfun.fun %></td> 
+        <th>Vector Clock Big</th> 
+        <td>
+          <input type="text" value="<%= props.big_vclock %>" />
+          updates
+        </td> 
       </tr>
       <tr>
-        <th>VClock Small</th> 
-        <td><%= props.small_vclock %></td> 
+        <th>Vector Clock Young</th> 
+        <td>
+          <input type="text" value="<%= props.young_vclock %>" />
+          seconds
+        </td> 
       </tr>
       <tr>
-        <th>VClock Big</th> 
-        <td><%= props.big_vclock %></td> 
-      </tr>
-      <tr>
-        <th>VClock Young</th> 
-        <td><%= props.young_vclock %></td> 
-      </tr>
-      <tr>
-        <th>VClock Old</th> 
-        <td><%= props.old_vclock %></td> 
+        <th>Vector Clock Old</th> 
+        <td>
+          <input type="text" value="<%= props.old_vclock %>" />
+          seconds
+        </td> 
       </tr>
     </tbody>
   </table>

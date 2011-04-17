@@ -35,11 +35,6 @@ rekonApp = Sammy('#container', function(){
     });
   });
 
-  this.post('#/buckets', function(context) {
-    var name = this.params['bucket'];
-    this.redirect('#/buckets/' + name);
-  });
-
   this.get('#/buckets/:bucket', function(context){
     var name   = this.params['bucket'];
     var bucket = new RiakBucket(name, Rekon.client);
@@ -58,28 +53,6 @@ rekonApp = Sammy('#container', function(){
         );
       } else {
         context.render('bucket-empty.html.template').replace('#keys tbody');
-      }
-    });
-  });
-
-  this.post('#/buckets/:bucket', function(context){
-    var app    = this;
-    var name   = this.params['bucket'];
-    var key    = this.params['key'] === '' ? undefined : this.params['key'];
-    var object = new RiakObject(name, key, Rekon.client, '{}', 'application/json');
-    object.store(function(status, rObject){
-      switch(status) {
-      case 'siblings':
-        alert("Oh noes! Siblings have been born and Rekon doesn't handle that yet.");
-        break;
-      case 'failure':
-        alert("There was an error creating a new Riak object.");
-        break;
-      case 'ok':
-      default:
-        console.log(rObject);
-        app.redirect('#/buckets/' + name + '/' + rObject.key);
-        break;
       }
     });
   });
@@ -182,6 +155,43 @@ rekonApp = Sammy('#container', function(){
     });
   });
 
+  this.get('#/stats', function(context){
+    header('Node Stats', document.location.origin + "/stats");
+
+    $.getJSON('/stats', function(data) {
+      context.render('stats.html.template', {stats:data}).appendTo('#main').then(
+        function(){ searchable('#stats tbody tr'); }
+      );
+    });
+  });
+
+  this.post('#/buckets', function(context) {
+    var name = this.params['bucket'];
+    this.redirect('#/buckets/' + name);
+  });
+
+  this.post('#/buckets/:bucket', function(context){
+    var app    = this;
+    var name   = this.params['bucket'];
+    var key    = this.params['key'] === '' ? undefined : this.params['key'];
+    var object = new RiakObject(name, key, Rekon.client, '{}', 'application/json');
+    object.store(function(status, rObject){
+      switch(status) {
+      case 'siblings':
+        alert("Oh noes! Siblings have been born and Rekon doesn't handle that yet.");
+        break;
+      case 'failure':
+        alert("There was an error creating a new Riak object.");
+        break;
+      case 'ok':
+      default:
+        console.log(rObject);
+        app.redirect('#/buckets/' + name + '/' + rObject.key);
+        break;
+      }
+    });
+  });
+
   this.post('#/buckets/:bucket/:key', function(context){ 
     var app    = this;
     var name   = this.params['bucket'];
@@ -210,16 +220,6 @@ rekonApp = Sammy('#container', function(){
           break;
         }
       });
-    });
-  });
-
-  this.get('#/stats', function(context){
-    header('Node Stats', document.location.origin + "/stats");
-
-    $.getJSON('/stats', function(data) {
-      context.render('stats.html.template', {stats:data}).appendTo('#main').then(
-        function(){ searchable('#stats tbody tr'); }
-      );
     });
   });
 
