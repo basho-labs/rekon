@@ -47,10 +47,6 @@ table th, table td {
   border:1px solid #ccc;
 }
 
-#bucket-props {
-  overflow-x:scroll;
-}
-
 #bucket tbody th {
   min-width:500px;
 }

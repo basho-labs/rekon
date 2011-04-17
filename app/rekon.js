@@ -60,8 +60,6 @@ rekonApp = Sammy('#container', function(){
         context.render('bucket-empty.html.template').replace('#keys tbody');
       }
     });
-
-
   });
 
   this.post('#/buckets/:bucket', function(context){
@@ -89,7 +87,7 @@ rekonApp = Sammy('#container', function(){
   this.get('#/buckets/:bucket/props', function(context) {
     var name   = this.params['bucket'];
     var bucket = new RiakBucket(name, Rekon.client);
-    
+
     header('Bucket Properties', Rekon.riakUrl(name));
     breadcrumb($('<a>').attr('href', '#/buckets/' + name).text('Keys'));
     breadcrumb($('<a>').attr('href', Rekon.riakUrl(name)).attr('target', '_blank').text('Riak').addClass('action'));
@@ -100,8 +98,11 @@ rekonApp = Sammy('#container', function(){
       post_commit = props.postcommit.join(",");
       if(pre_commit === "") {pre_commit = "None";}
       if(post_commit === "") {post_commit = "None";}
-      context.render('bucket-hooks.html.template', {pre_commit: pre_commit, post_commit: post_commit}).appendTo('#main');
-      context.render('bucket-props.html.template', {props: props}).appendTo('#main');
+      context.render('bucket-hooks.html.template', {pre_commit: pre_commit, post_commit: post_commit},
+        function(){
+          context.render('bucket-props.html.template', {props: props}).appendTo('#main');
+        }
+      ).appendTo('#main');
     });
   });
 
@@ -109,7 +110,7 @@ rekonApp = Sammy('#container', function(){
     var name   = this.params['bucket'];
     var key    = this.params['key'];
     var bucket = new RiakBucket(name, Rekon.client);
-    
+
     header('Key', Rekon.riakUrl(name + '/' + key));
     breadcrumb($('<a>').attr('href', '#/buckets/' + name).text('Keys'));
     breadcrumb($('<a>').attr('href', '#/buckets/' + name + '/' + key + '/edit').text('Edit').addClass('action'));

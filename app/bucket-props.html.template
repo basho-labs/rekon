@@ -1,51 +1,76 @@
-<div id='bucket-props'> 
-  <table> 
-    <thead> 
-      <tr> 
-        <th colspan='8'></th> 
-        <th colspan='2'>Linkfun</th> 
-        <th colspan='2'>Chash Keyfun</th> 
-        <th colspan='4'>VClock</th> 
-      </tr> 
-      <tr> 
+<div id='bucket-props'>
+  <table>
+    <thead>
+      <tr>
+        <th>Attribute</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
         <th>Name</th> 
-        <th>W</th> 
-        <th>R</th> 
-        <th>RW</th> 
-        <th>DW</th> 
-        <th>N Val</th> 
-        <th>Allow Multi</th> 
-        <th>Last Write</th> 
-        <th>Mod</th> 
-        <th>Fun</th> 
-        <th>Mod</th> 
-        <th>Fun</th> 
-        <th>Small</th> 
-        <th>Big</th> 
-        <th>Young</th> 
-        <th>Old</th> 
-      </tr> 
-    </thead> 
-    <tbody> 
-      <tr> 
         <td><%= props.name %></td> 
+      </tr>
+      <tr>
+        <th>W</th> 
         <td><%= props.w %></td> 
+      </tr>
+      <tr>
+        <th>R</th> 
         <td><%= props.r %></td> 
+      </tr>
+      <tr>
+        <th>RW</th> 
         <td><%= props.rw %></td> 
+      </tr>
+      <tr>
+        <th>DW</th> 
         <td><%= props.dw %></td> 
+      </tr>
+      <tr>
+        <th>N Val</th> 
         <td><%= props.n_val %></td> 
+      </tr>
+      <tr>
+        <th>Allow Multi</th> 
         <td><%= props.allow_mult %></td> 
+      </tr>
+      <tr>
+        <th>Last Write</th> 
         <td><%= props.last_write_wins %></td> 
+      </tr>
+      <tr>
+        <th>Linkfun Mod</th> 
         <td><%= props.linkfun.mod %></td> 
+      </tr>
+      <tr>
+        <th>Linkfun Fun</th> 
         <td><%= props.linkfun.fun %></td> 
+      </tr>
+      <tr>
+        <th>Chash Keyfun Mod</th> 
         <td><%= props.chash_keyfun.mod %></td> 
+      </tr>
+      <tr>
+        <th>Chash Keyfun Fun</th> 
         <td><%= props.chash_keyfun.fun %></td> 
+      </tr>
+      <tr>
+        <th>VClock Small</th> 
         <td><%= props.small_vclock %></td> 
+      </tr>
+      <tr>
+        <th>VClock Big</th> 
         <td><%= props.big_vclock %></td> 
+      </tr>
+      <tr>
+        <th>VClock Young</th> 
         <td><%= props.young_vclock %></td> 
+      </tr>
+      <tr>
+        <th>VClock Old</th> 
         <td><%= props.old_vclock %></td> 
-      </tr> 
-    </tbody> 
-  </table> 
-</div> 
-
+      </tr>
+    </tbody>
+  </table>
+</div>
