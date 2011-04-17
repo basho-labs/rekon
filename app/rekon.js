@@ -45,6 +45,8 @@ rekonApp = Sammy('#container', function(){
     var bucket = new RiakBucket(name, Rekon.client);
     
     header('Bucket', Rekon.riakUrl(name));
+    breadcrumb($('<a>').attr('href', '#/buckets/' + name + '/props').text('Props'));
+    breadcrumb($('<a>').attr('href', Rekon.riakUrl(name)).attr('target', '_blank').text('Riak').addClass('action'));
 
     context.render('bucket.html.template', {bucket: name}).appendTo('#main');
 
@@ -89,6 +91,8 @@ rekonApp = Sammy('#container', function(){
     var bucket = new RiakBucket(name, Rekon.client);
     
     header('Bucket Properties', Rekon.riakUrl(name));
+    breadcrumb($('<a>').attr('href', '#/buckets/' + name).text('Keys'));
+    breadcrumb($('<a>').attr('href', Rekon.riakUrl(name)).attr('target', '_blank').text('Riak').addClass('action'));
 
     bucket.getProps(function(props) {
       var pre_commit, post_commit;
