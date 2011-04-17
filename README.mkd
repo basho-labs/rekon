@@ -17,6 +17,6 @@ to specify the node.
 
 ## Usage
 
-Once installed navigate to http://node-addr:host/riak/rekon/go.  This will be
+Once installed navigate to http://node-addr:port/riak/rekon/go.  This will be
 http://127.0.0.1:8098/riak/rekon/go if you installed riak on a local riak node
 running on the standard port.
