@@ -2,6 +2,15 @@
 
 Visual browser for Basho's data store, riak, built as a riak app.
 
-##Goals
-1. Install locally using `./install.sh`
-2. Download and install using `curl -s get.rekonapp.com | sh`
+## Installing
+
+### tl;dr
+`curl -s get.rekonapp.com | sh`
+
+### Quick Install
+Download and install using `curl -s get.rekonapp.com | sh` or 
+`curl -s get.rekonapp.com | node=node-addr:host sh` to specify the node.
+
+### Manual Install
+Install locally using `./install.sh` or `./install.sh node-addr:host` 
+to specify the node.

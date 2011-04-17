@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# Allow running the script and specifiying an install target
+#   ./install node-address:host
 if [ -n "$1" ] ; then
   node=$1
 else
@@ -10,7 +12,10 @@ riak_url="http://$node/riak/rekon"
 
 echo "Installing rekon to $node..."
 
-for f in $(ls app); do
+base_dir="`dirname $0`/app"
+
+# loop through everything in the app directory and put in in the rekon bucket
+for f in $(ls $base_dir); do
   # echo "Uploading $f to riak"
   case $f in
     go | *.html )
@@ -33,5 +38,7 @@ for f in $(ls app); do
       ;;
   esac
 
-  curl -X PUT -H"Content-Type: $content_type" $riak_url/$f --data-binary @app/$f
+  curl -X PUT -H"Content-Type: $content_type" $riak_url/$f --data-binary @$base_dir/$f
 done
+
+echo "Installed, now visit: http://$riak_url/go"
