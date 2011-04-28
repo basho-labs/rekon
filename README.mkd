@@ -5,11 +5,11 @@ Visual browser for Basho's data store, riak, built as a riak app.
 ## Installing
 
 ### tl;dr
-`curl -s get.rekonapp.com | sh`
+`curl -s rekon.basho.com | sh`
 
 ### Quick Install
-Download and install using `curl -s get.rekonapp.com | sh` or 
-`curl -s get.rekonapp.com | node=node-addr:port sh` to specify the node.
+Download and install using `curl -s rekon.basho.com | sh` or 
+`curl -s rekon.basho.com | node=node-addr:port sh` to specify the node.
 
 ### Manual Install
 Install locally using `./install.sh` or `./install.sh node-addr:port` 
