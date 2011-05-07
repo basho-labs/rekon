@@ -28,7 +28,17 @@ rekonApp = Sammy('#container', function(){
     context.render('buckets.html.template').appendTo('#main');
     
     Rekon.client.buckets(function(buckets) {
-      bucketRows = buckets.map(function(bucket){ return {bucket: bucket};});
+      bucketRows = buckets.reduce(function(acc, bucket){
+        if (bucket === 'luwak_tld') {
+          acc.push({bucket: 'luwak'});
+          return acc;
+        } else if (bucket === 'luwak_node') {
+          return acc;
+        } else {
+          acc.push({bucket: bucket});
+          return acc;
+        }
+      }, []);
       context.renderEach('bucket-row.html.template', bucketRows).replace('#buckets tbody').then(
         function(){ searchable('#buckets table tbody tr'); }
       );
@@ -42,7 +52,8 @@ rekonApp = Sammy('#container', function(){
 
   this.get('#/buckets/:bucket', function(context){
     var name   = this.params['bucket'];
-    var bucket = new RiakBucket(name, Rekon.client);
+    var bucket = new RiakBucket(name === 'luwak' ? 'luwak_tld' : name,
+                                Rekon.client);
     
     header('Bucket', Rekon.riakUrl(name));
     breadcrumb($('<a>').attr('href', '#/buckets/' + name + '/props').text('Props'));
@@ -108,7 +119,8 @@ rekonApp = Sammy('#container', function(){
   this.get('#/buckets/:bucket/:key', function(context) {
     var name   = this.params['bucket'];
     var key    = this.params['key'];
-    var bucket = new RiakBucket(name, Rekon.client);
+    var bucket = new RiakBucket(name === 'luwak' ? 'luwak_tld' : name,
+                                Rekon.client);
     
     header('Key', Rekon.riakUrl(name + '/' + key));
     breadcrumb($('<a>').attr('href', '#/buckets/' + name).text('Keys'));
