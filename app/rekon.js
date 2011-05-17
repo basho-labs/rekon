@@ -15,6 +15,7 @@ rekonApp = Sammy('#container', function(){
   };
   
   this.use('Template');
+  this.use('NestedParams');
 
   this.before(function(){
     $('#main').empty();
@@ -40,7 +41,7 @@ rekonApp = Sammy('#container', function(){
     var bucket = new RiakBucket(name, Rekon.client);
     
     header('Bucket', Rekon.riakUrl(name));
-    breadcrumb($('<a>').attr('href', '#/buckets/' + name + '/props').text('Props'));
+    breadcrumb($('<a>').attr('href', '#/bucket-props/' + name).text('Props'));
     breadcrumb($('<a>').attr('href', Rekon.riakUrl(name)).attr('target', '_blank').text('Riak').addClass('action'));
 
     context.render('bucket.html.template', {bucket: name}).appendTo('#main');
@@ -57,7 +58,7 @@ rekonApp = Sammy('#container', function(){
     });
   });
 
-  this.get('#/buckets/:bucket/props', function(context) {
+  this.get('#/bucket-props/:bucket', function(context) {
     var name   = this.params['bucket'];
     var bucket = new RiakBucket(name, Rekon.client);
 
@@ -73,7 +74,13 @@ rekonApp = Sammy('#container', function(){
       if(post_commit === "") {post_commit = "None";}
       context.render('bucket-hooks.html.template', {pre_commit: pre_commit, post_commit: post_commit},
         function(){
-          context.render('bucket-props.html.template', {props: props}).appendTo('#main');
+          context.render('bucket-props.html.template', {props: props}).appendTo('#main').then(function(){
+            var $selects = $('select[data-select-value]');
+            for(var i=0; i<$selects.length;i++) { 
+              var $select = $($selects[i]);
+              $select.val($select.attr('data-select-value'));
+            }
+          });
         }
       ).appendTo('#main');
     });
@@ -192,6 +199,18 @@ rekonApp = Sammy('#container', function(){
     });
   });
 
+  this.post('#/bucket-props/:bucket', function(context) {
+    var app      = this;
+    var name     = this.params['bucket'];
+    var bucket   = new RiakBucket(name, Rekon.client);
+    var props    = Rekon.typecastBucketProps(this.params['props']);
+
+    bucket.props = props;
+    bucket.store(function(){
+      app.redirect("#/bucket-props/" + name);
+    });
+  });
+
   this.post('#/buckets/:bucket/:key', function(context){ 
     var app    = this;
     var name   = this.params['bucket'];
@@ -237,6 +256,24 @@ Rekon = {
       append = "";
     }
     return this.baseUrl() + append;
+  },
+
+  typecastBucketProps : function(props) {
+    keys = ['w', 'r', 'dw', 'rw', 'n_val', 'young_vclock', 'old_vclock', 'small_vclock', 'big_vclock'];
+    for(var i=0; i<keys.length; i++) {
+      key = keys[i];
+      val = parseInt(props[key], 10);
+      if (val) {
+        props[key] = parseInt(props[key], 10);
+      }
+    }
+    props.allow_mult      = !!props.allow_mult;
+    props.last_write_wins = !!props.last_write_wins;
+
+    console.log("Hello there sir!!!");
+    console.log(props);
+
+    return props;
   }
 
 };

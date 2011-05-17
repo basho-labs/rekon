@@ -1,4 +1,5 @@
 <div id='bucket-props'>
+<form action="#/bucket-props/<%= props.name %>" method="post">
   <table>
     <thead>
       <tr>
@@ -13,38 +14,109 @@
       </tr>
       <tr>
         <th>W</th> 
-        <td><%= props.w %></td> 
+        <td>
+          <select name="props[w]" data-select-value="<%= props.w %>">
+            <option value="one">one</option>
+            <option value="quorum">quorum</option>
+            <option value="all">all</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+          </select>
+          vnodes
+        </td>
       </tr>
       <tr>
         <th>R</th> 
-        <td><%= props.r %></td> 
+        <td>
+          <select name="props[r]" data-select-value="<%= props.r %>">
+            <option value="one">one</option>
+            <option value="quorum">quorum</option>
+            <option value="all">all</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+          </select>
+          vnodes
+        </td>
       </tr>
       <tr>
         <th>RW</th> 
-        <td><%= props.rw %></td> 
+        <td>
+          <select name="props[rw]" data-select-value="<%= props.rw %>">
+            <option value="one">one</option>
+            <option value="quorum">quorum</option>
+            <option value="all">all</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+          </select>
+          vnodes
+        </td>
       </tr>
       <tr>
         <th>DW</th> 
-        <td><%= props.dw %></td> 
+        <td>
+          <select name="props[dw]" data-select-value="<%= props.dw %>">
+            <option value="one">one</option>
+            <option value="quorum">quorum</option>
+            <option value="all">all</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+          </select>
+          vnodes
+        </td>
       </tr>
       <tr>
         <th>N Value</th> 
         <td>
-          <input type="text" value="<%= props.n_val %>" /> replicas
+          <select name="props[n_val]" data-select-value="<%= props.n_val %>">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+          </select>
+          replicas
         </td> 
       </tr>
       <tr>
         <th>Allow Multi</th> 
         <td>
           <!-- <%= props.allow_mult %> -->
-          <input type="checkbox" value="1" <%= props.allow_muli ? 'checked=checked' : '' %> />
+          <input type="checkbox" value="1" name="props[allow_mult]" <%= props.allow_mult ? 'checked=checked' : '' %> />
         </td> 
       </tr>
       <tr>
         <th>Last Write</th> 
         <td>
           <!-- <%= props.last_write_wins %> -->
-          <input type="checkbox" value="1" <%= props.last_write_wins ? 'checked=checked' : '' %> />
+          <input type="checkbox" value="1" name="props[last_write_wins]" <%= props.last_write_wins ? 'checked=checked' : '' %> />
         </td>
       </tr>
       <tr>
@@ -56,7 +128,7 @@
         </td>
       </tr>
       <tr>
-        <th>Chash Keyfun</th> 
+        <th>CHash Keyfun</th> 
         <td>
           <code>
             <%= props.chash_keyfun.mod %>:<%= props.chash_keyfun.fun %>
@@ -66,31 +138,34 @@
       <tr>
         <th>Vector Clock Small</th> 
         <td>
-          <input type="text" value="<%= props.small_vclock %>" />
+          <input type="text" name="props[small_vclock]" value="<%= props.small_vclock %>" />
           updates
         </td> 
       </tr>
       <tr>
         <th>Vector Clock Big</th> 
         <td>
-          <input type="text" value="<%= props.big_vclock %>" />
+          <input type="text" name="props[big_vclock]" value="<%= props.big_vclock %>" />
           updates
         </td> 
       </tr>
       <tr>
         <th>Vector Clock Young</th> 
         <td>
-          <input type="text" value="<%= props.young_vclock %>" />
+          <input type="text" name="props[young_vclock]" value="<%= props.young_vclock %>" />
           seconds
         </td> 
       </tr>
       <tr>
         <th>Vector Clock Old</th> 
         <td>
-          <input type="text" value="<%= props.old_vclock %>" />
+          <input type="text" name="props[old_vclock]" value="<%= props.old_vclock %>" />
           seconds
         </td> 
       </tr>
     </tbody>
   </table>
+  <br/>
+  <button type="submit">Update</button>
+</form>
 </div>
