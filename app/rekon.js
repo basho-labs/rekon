@@ -222,6 +222,11 @@ rekonApp = Sammy('#container', function(){
     });
   });
 
+  this.get('#/luwak', function(context){
+    header('Luwak', document.location.origin + "/luwak");
+    context.render('luwak.html.template').appendTo('#main');
+  });
+
 });
 
 Rekon = {
