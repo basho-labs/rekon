@@ -92,7 +92,6 @@
         <th>N Value</th> 
         <td>
           <select name="props[n_val]" data-select-value="<%= props.n_val %>">
-            <option value="0">0</option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -138,28 +137,28 @@
       <tr>
         <th>Vector Clock Small</th> 
         <td>
-          <input type="text" name="props[small_vclock]" value="<%= props.small_vclock %>" />
+          <input type="text" name="props[small_vclock]" value="<%= props.small_vclock %>" data-filter="integer" />
           updates
         </td> 
       </tr>
       <tr>
         <th>Vector Clock Big</th> 
         <td>
-          <input type="text" name="props[big_vclock]" value="<%= props.big_vclock %>" />
+          <input type="text" name="props[big_vclock]" value="<%= props.big_vclock %>" data-filter="integer" />
           updates
         </td> 
       </tr>
       <tr>
         <th>Vector Clock Young</th> 
         <td>
-          <input type="text" name="props[young_vclock]" value="<%= props.young_vclock %>" />
+          <input type="text" name="props[young_vclock]" value="<%= props.young_vclock %>" data-filter="integer" />
           seconds
         </td> 
       </tr>
       <tr>
         <th>Vector Clock Old</th> 
         <td>
-          <input type="text" name="props[old_vclock]" value="<%= props.old_vclock %>" />
+          <input type="text" name="props[old_vclock]" value="<%= props.old_vclock %>" data-filter="integer" />
           seconds
         </td> 
       </tr>
