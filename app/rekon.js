@@ -293,6 +293,15 @@ $('#keys a.delete').live('click', function(e){
   });
 });
 
+var filterInteger = function(){
+  var value = parseInt($(this).val(), 10);
+  if (isNaN(value)) {
+    value = 1;
+  }
+  $(this).val(value);
+};
+
+$("input[data-filter=integer]").live('blur', filterInteger);
 
 /*
 * Bootstrap the application
