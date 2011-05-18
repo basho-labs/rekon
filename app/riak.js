@@ -1013,5 +1013,15 @@ function Luwak(client) {
   this.client = client;
 }
 
-
-
+/**
+ * Gets the file names for luwak, currently only uses keys=true
+ * and doesn't support streaming keys.
+ * @param callback function
+ * callback - function(keys)
+ * @param files Array
+ */
+Luwak.prototype.files = function(callback) {
+  jQuery.getJSON(this.client.luwakUrl + "?keys=true", function(data){
+    callback(data.keys);
+  });
+};
