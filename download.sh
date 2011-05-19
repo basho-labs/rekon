@@ -28,6 +28,9 @@ tar xzf /tmp/rekon.tar.gz -C /tmp/extract-rekon
 # Move crazy gitub adamhunter-sha directory to standardized path
 mv -f /tmp/extract-rekon/*/* /tmp/rekon/
 
+# Enable execution bit for install script
+chmod u+x /tmp/rekon/install.sh
+
 # Run downloaded installer script
 /tmp/rekon/install.sh $node;
 
