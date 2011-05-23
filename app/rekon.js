@@ -222,13 +222,47 @@ rekonApp = Sammy('#container', function(){
     });
   });
 
+  this.get('#/luwak', function(context){
+    luwak = new Luwak(Rekon.client);
+
+    // TODO: check Luwak is enabled
+
+    header('Luwak', document.location.origin + "/luwak");
+    context.render('luwak.html.template').appendTo('#main').then(function(){
+
+      luwak.files(function(files) {
+        if (files === null) {
+          console.log('not working');
+          $('#files .pending td').html(
+          '<p><b>Luwak is not enabled.</b> Please add <code>{luwak, [{enabled, true}]}</code> to your app.config.</p>');
+        }
+        else if (files.length > 0) {
+          fileRows = files.map(function(file){ return {file:file};});
+          context.renderEach('luwak-row.html.template', fileRows).replace('#files tbody').then(
+            function() { searchable('#luwak tbody'); }
+          );
+        } else{
+          $('#files .pending td').html('<p>You have not added any files to luwak.</p>');
+        }
+      });
+    });
+  });
+
 });
 
 Rekon = {
   client : new RiakClient(),
 
+  locationUrl : function() {
+    return document.location.protocol + '//' + document.location.host;
+  },
+
   baseUrl : function() {
-    return document.location.protocol + '//' + document.location.host + this.client.baseUrl;
+    return this.locationUrl() + this.client.baseUrl;
+  },
+
+  luwakUrl : function() {
+    return this.locationUrl() + this.client.luwakUrl;
   },
 
   riakUrl : function(append) {

@@ -883,8 +883,9 @@ RiakBucket.prototype._handleGetObject = function(key, req, callback, createEmpty
  * Entry point for interacting with Riak
  * @param baseUrl - URL for 'raw' interface (optional, default: '/riak')
  * @param mapredUrl - URL for map/reduce jobs (optional, default: '/mapred')
+ * @param luwakUrl - URL for luwak endpoint (optional, default: '/luwak')
  */
-function RiakClient(baseUrl, mapredUrl) {
+function RiakClient(baseUrl, mapredUrl, luwakUrl) {
   if (baseUrl === undefined) {
     baseUrl = '/riak/';
   }
@@ -898,11 +899,19 @@ function RiakClient(baseUrl, mapredUrl) {
   }
   this.baseUrl = baseUrl;
   this.clientId = "js_" + RiakUtil.base64Encode(Math.floor(Math.random() * 4294967296));
+
   if (mapredUrl !== undefined) {
     this.mapredUrl = mapredUrl;
   }
   else {
     this.mapredUrl = '/mapred';
+  }
+
+  if (luwakUrl !== undefined) {
+    this.luwakUrl = luwakUrl;
+  }
+  else {
+    this.luwakUrl = '/luwak';
   }
 }
 
@@ -994,3 +1003,25 @@ RiakClient.prototype._buildPath = function(method, bucket, key) {
 };
 
 /** End RiakClient internal Functions **/
+
+
+function Luwak(client) {
+  if (client === undefined) {
+    throw("Cannot construct Luwak without client reference");
+  }
+
+  this.client = client;
+}
+
+/**
+ * Gets the file names for luwak, currently only uses keys=true
+ * and doesn't support streaming keys.
+ * @param callback function
+ * callback - function(keys)
+ * @param files Array
+ */
+Luwak.prototype.files = function(callback) {
+  jQuery.getJSON(this.client.luwakUrl + "?keys=true").success(
+    function(data){callback(data.keys);}
+  ).error(function(){ callback(null);});
+};
