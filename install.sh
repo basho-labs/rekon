@@ -41,4 +41,4 @@ for f in $(ls $base_dir); do
   curl -X PUT -H"Content-Type: $content_type" $riak_url/$f --data-binary @$base_dir/$f
 done
 
-echo "Installed, now visit: http://$riak_url/go"
+echo "Installed, now visit: $riak_url/go"
