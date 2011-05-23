@@ -15,7 +15,7 @@
       <tr>
         <th>W</th> 
         <td>
-          <select name="props[w]" data-select-value="<%= props.w %>">
+          <select name="props[w]" data-select-value="<%= props.w %>" class="cap-control">
             <option value="one">one</option>
             <option value="quorum">quorum</option>
             <option value="all">all</option>
@@ -34,7 +34,7 @@
       <tr>
         <th>R</th> 
         <td>
-          <select name="props[r]" data-select-value="<%= props.r %>">
+          <select name="props[r]" data-select-value="<%= props.r %>" class="cap-control">
             <option value="one">one</option>
             <option value="quorum">quorum</option>
             <option value="all">all</option>
@@ -53,7 +53,7 @@
       <tr>
         <th>RW</th> 
         <td>
-          <select name="props[rw]" data-select-value="<%= props.rw %>">
+          <select name="props[rw]" data-select-value="<%= props.rw %>" class="cap-control">
             <option value="one">one</option>
             <option value="quorum">quorum</option>
             <option value="all">all</option>
@@ -72,7 +72,7 @@
       <tr>
         <th>DW</th> 
         <td>
-          <select name="props[dw]" data-select-value="<%= props.dw %>">
+          <select name="props[dw]" data-select-value="<%= props.dw %>" class="cap-control">
             <option value="one">one</option>
             <option value="quorum">quorum</option>
             <option value="all">all</option>
@@ -91,7 +91,7 @@
       <tr>
         <th>N Value</th> 
         <td>
-          <select name="props[n_val]" data-select-value="<%= props.n_val %>">
+          <select name="props[n_val]" data-select-value="<%= props.n_val %>" id="n_val">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>

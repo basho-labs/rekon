@@ -75,11 +75,15 @@ rekonApp = Sammy('#container', function(){
       context.render('bucket-hooks.html.template', {pre_commit: pre_commit, post_commit: post_commit},
         function(){
           context.render('bucket-props.html.template', {props: props}).appendTo('#main').then(function(){
+            /* set the values for the select elements */
             var $selects = $('select[data-select-value]');
             for(var i=0; i<$selects.length;i++) { 
               var $select = $($selects[i]);
               $select.val($select.attr('data-select-value'));
             }
+            /* bind the limit based off of the n_val */
+            Rekon.capControlsSelector();
+            $('select#n_val').change(Rekon.capControlsSelector);
           });
         }
       ).appendTo('#main');
@@ -255,8 +259,6 @@ rekonApp = Sammy('#container', function(){
   this.get('#/luwak', function(context){
     luwak = new Luwak(Rekon.client);
 
-    // TODO: check Luwak is enabled
-
     header('Luwak', document.location.origin + "/luwak");
     context.render('luwak.html.template').appendTo('#main').then(function(){
 
@@ -314,10 +316,35 @@ Rekon = {
     props.allow_mult      = !!props.allow_mult;
     props.last_write_wins = !!props.last_write_wins;
 
-    console.log("Hello there sir!!!");
-    console.log(props);
-
     return props;
+  },
+
+  capControlsSelector : function() {
+    var nVal = $('select#n_val').val();
+    $('.cap-control').each(function(i, select) {
+      var $select = $(select);
+      var value   = parseInt($select.val(), 10);
+      var endVal  = parseInt($select.find('option:last').val(), 10);
+
+      /* figure out if we need to append or trim */
+      if (endVal > nVal) {
+        $select.find('option').each(function(j, option) {
+          var $option = $(option);
+          if (parseInt($option.val(), 10) > nVal) {
+            $option.remove();
+          }
+        });
+        if (value) {
+          $select.val($select.find('option:last').val());
+        }
+      } 
+      else if (endVal < nVal) {
+        while(endVal < nVal) {
+          endVal++;
+          $('<option>').val(endVal).html(endVal).appendTo($select);
+        } 
+      }
+    });
   }
 
 };
