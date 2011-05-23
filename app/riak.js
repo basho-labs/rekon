@@ -1021,7 +1021,7 @@ function Luwak(client) {
  * @param files Array
  */
 Luwak.prototype.files = function(callback) {
-  jQuery.getJSON(this.client.luwakUrl + "?keys=true", function(data){
-    callback(data.keys);
-  });
+  jQuery.getJSON(this.client.luwakUrl + "?keys=true").success(
+    function(data){callback(data.keys);}
+  ).error(function(){ callback(null);});
 };

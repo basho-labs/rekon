@@ -228,17 +228,23 @@ rekonApp = Sammy('#container', function(){
     // TODO: check Luwak is enabled
 
     header('Luwak', document.location.origin + "/luwak");
-    context.render('luwak.html.template').appendTo('#main');
+    context.render('luwak.html.template').appendTo('#main').then(function(){
 
-    luwak.files(function(files) {
-      if (files.length > 0) {
-        fileRows = files.map(function(file){ return {file:file};});
-        context.renderEach('luwak-row.html.template', fileRows).replace('#files tbody').then(
-          function() { searchable('#luwak tbody'); }
-        );
-      } else{
-        alert("Luwak is empty!");
-      }
+      luwak.files(function(files) {
+        if (files === null) {
+          console.log('not working');
+          $('#files .pending td').html(
+          '<p><b>Luwak is not enabled.</b> Please add <code>{luwak, [{enabled, true}]}</code> to your app.config.</p>');
+        }
+        else if (files.length > 0) {
+          fileRows = files.map(function(file){ return {file:file};});
+          context.renderEach('luwak-row.html.template', fileRows).replace('#files tbody').then(
+            function() { searchable('#luwak tbody'); }
+          );
+        } else{
+          $('#files .pending td').html('<p>You have not added any files to luwak.</p>');
+        }
+      });
     });
   });
 
