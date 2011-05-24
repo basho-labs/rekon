@@ -1,0 +1,15 @@
+<div id="mapred">
+  <div id="results"><pre></pre></div>
+  <form action="#/mapred" method="post">
+    <p>
+      <label for="inputs">Inputs</label>
+      <textarea id="inputs" name="inputs"><%= params['inputs'] || '' %></textarea>
+    </p>
+    <p>
+      <label for="query">Query</label>
+      <textarea id="query" name="query"><%= params['query'] || '' %></textarea>
+    </p>
+    <br/>
+    <button type="submit">Run</button>
+  </form>
+</div>

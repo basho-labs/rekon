@@ -283,6 +283,43 @@ rekonApp = Sammy('#container', function(){
     });
   });
 
+  this.get('#/mapred', function(context){
+    header('MapReduce', document.location.origin + '/mapred');
+
+    context.render('mapred.html.template').appendTo('#main');
+  });
+
+  this.post('#/mapred', function(context){
+    header('MapReduce', document.location.origin + '/mapred');
+
+    try {
+      var mapredJob = {
+        inputs  : JSON.parse(this.params['inputs']),
+        query   : JSON.parse(this.params['query'])
+      };
+    } catch (e) {
+      alert('Your inputs or query are not valid JSON!');
+    }
+
+    context.render('mapred.html.template', {params: this.params}).appendTo('#main').then(function(){
+
+      var mapper = new RiakMapper(Rekon.client, 'dummyBucket');
+      mapper._buildInputs = function() {
+        return mapredJob.inputs;
+      };
+
+      mapper.phases = mapredJob.query;
+
+      mapper.run(function(success, results, request) {
+        if (success) {
+          $('#results pre').html(JSON.stringify(results, null, 4));
+        } else {
+          alert("MapRed Error!");
+        }
+      });
+    });
+  });
+
 });
 
 Rekon = {
@@ -350,7 +387,7 @@ Rekon = {
       }
     });
   }
-
+  
 };
 
 $('#keys a.delete').live('click', function(e){
@@ -377,6 +414,8 @@ var filterInteger = function(){
 };
 
 $("input[data-filter=integer]").live('blur', filterInteger);
+
+jQuery.ajax({beforeSend: function(req) { req.setRequestHeader('X-Riak-ClientId', Rekon.client.clientId); }});
 
 /*
 * Bootstrap the application

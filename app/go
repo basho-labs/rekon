@@ -29,6 +29,9 @@
             <a href="#/luwak">Luwak</a>
           </li>
           <li class="perm">
+            <a href="#/mapred">MapReduce</a>
+          </li>
+          <li class="perm">
             <a href="#/buckets">Buckets</a> 
           </li>
         </ul> 
