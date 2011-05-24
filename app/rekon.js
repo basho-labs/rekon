@@ -75,14 +75,17 @@ rekonApp = Sammy('#container', function(){
       context.render('bucket-hooks.html.template', {pre_commit: pre_commit, post_commit: post_commit},
         function(){
           context.render('bucket-props.html.template', {props: props}).appendTo('#main').then(function(){
-            /* set the values for the select elements */
-            var $selects = $('select[data-select-value]');
-            for(var i=0; i<$selects.length;i++) { 
-              var $select = $($selects[i]);
-              $select.val($select.attr('data-select-value'));
-            }
+            var $selects, $select, i;
+            $selects = $('select[data-select-value]');
+            /* select the nvalue */
+            $('select#n_val').val($('select#n_val').attr('data-select-value'));
             /* bind the limit based off of the n_val */
             Rekon.capControlsSelector();
+            /* reselect cap control vals based off of nval */
+            for(i=0; i<$selects.length;i++) { 
+              $select = $($selects[i]);
+              $select.val($select.attr('data-select-value'));
+            }
             $('select#n_val').change(Rekon.capControlsSelector);
           });
         }
@@ -320,11 +323,12 @@ Rekon = {
   },
 
   capControlsSelector : function() {
-    var nVal = $('select#n_val').val();
+    var nVal = parseInt($('select#n_val').val(), 10);
     $('.cap-control').each(function(i, select) {
       var $select = $(select);
       var value   = parseInt($select.val(), 10);
       var endVal  = parseInt($select.find('option:last').val(), 10);
+      if (isNaN(endVal)) { endVal = 0; }
 
       /* figure out if we need to append or trim */
       if (endVal > nVal) {
