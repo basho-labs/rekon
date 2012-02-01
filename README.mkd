@@ -2,10 +2,13 @@
 
 Visual browser for Basho's data store, riak, built as a riak app.
 
+*Rekon's functionality is being incorporated into [Riak Control](https://github.com/basho/riak_control), 
+a new Admin UI for Riak that is fully-open source, maintained by Basho, and will be supported in the Riak 1.1 release.* 
+
 ## Installing
 
 ### tl;dr
-`curl -s rekon.basho.com | sh`
+`curl -s rekon.basho.com | sh`  
 
 ### Quick Install
 Download and install using `curl -s rekon.basho.com | sh` or 
