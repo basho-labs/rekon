@@ -338,6 +338,9 @@ RiakObject.fromRequest = function(bucket, key, client, req) {
   retval.setLinks(linkHeader);
   retval.etag = req.getResponseHeader('Etag');
   retval.lastModified = req.getResponseHeader('Last-Modified');
+
+  all_headers = req.getAllResponseHeaders();
+  retval.setIndexes(all_headers);
   return retval;
 };
 
@@ -397,6 +400,20 @@ RiakObject.prototype.setLinks = function(linkHeader) {
     }
   }
   this.links = parsedLinks;
+};
+
+RiakObject.prototype.setIndexes = function(all_headers) {
+  headers_by_line = all_headers.split('\n');
+  results = {}
+  for (i = 0; i < headers_by_line.length; i++) {
+    if (headers_by_line[i].indexOf('x-riak-index-') == 0) {
+      index = headers_by_line[i].split(':');
+      k = index[0].substring('x-riak-index-'.length, index[0].length);
+      v = index[1].trim();
+      results[k] = v;
+    }
+  }
+  this.indexes = results
 };
 
 /**

@@ -17,6 +17,12 @@
   </td> 
 </tr> 
 <tr> 
+  <th>Secondary Indexes</th> 
+  <td> 
+    <pre><%= JSON.stringify(object.indexes) %></pre> 
+  </td> 
+</tr> 
+<tr> 
   <th>Links</th> 
   <td> 
     <pre><%= JSON.stringify(object.links) %></pre> 
