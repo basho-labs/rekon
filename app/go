@@ -26,9 +26,6 @@
             <a href="#/stats">Stats</a>
           </li>
           <li class="perm">
-            <a href="#/luwak">Luwak</a>
-          </li>
-          <li class="perm">
             <a href="#/buckets">Buckets</a> 
           </li>
         </ul> 
