@@ -42,7 +42,7 @@ rekonApp = Sammy('#container', function(){
 
     header('Bucket', Rekon.riakUrl(name));
     breadcrumb($('<a>').attr('href', '#/bucket-props/' + name).text('Props'));
-    breadcrumb($('<a>').attr('href', Rekon.riakUrl(name)).attr('target', '_blank').text('Riak').addClass('action'));
+    breadcrumb($('<a>').attr('href', Rekon.bucketUrl(name) + '/props').attr('target', '_blank').text('Props Riak').addClass('action'));
 
     context.render('bucket.html.template', {bucket: name}).appendTo('#main');
 

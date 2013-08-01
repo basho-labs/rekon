@@ -2,13 +2,13 @@
   <th>
     <em><%= Rekon.baseUrl() %></em>/<%= bucket %>
   </th>
-  <td> 
+  <td>
     <a href="#/buckets/<%= bucket %>" class="view icon">Keys</a>
-  </td> 
+  </td>
   <td>
     <a href="#/bucket-props/<%= bucket %>" class="stats icon">Props</a>
   </td>
-  <td> 
+  <td>
     <a href="<%= Rekon.baseUrl() %>/<%= bucket %>/props" class="riak icon" target="_blank">Riak</a>
-  </td> 
+  </td>
 </tr>
