@@ -42,12 +42,12 @@ echo "Install Completed!"
 
 if [ $OSTYPE == 'darwin10.0' ]; then
   # if we are macking OSX, use open to take the user to rekon
-  echo "Opening http://$node/riak/rekon/go#/buckets"
-  open "http://$node/riak/rekon/go#/buckets"
+  echo "Opening http://$node/buckets/rekon/keys/go#/buckets"
+  open "http://$node/buckets/rekon/keys/go#/buckets"
 else
   echo
   echo "************************************************"
-  echo "Visit http://$node/riak/rekon/go in your browser"
+  echo "Visit http://$node/buckets/rekon/keys/go in your browser"
   echo "************************************************"
 fi
 

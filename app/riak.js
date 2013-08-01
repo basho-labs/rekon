@@ -418,7 +418,7 @@ RiakObject.prototype.setIndexes = function(all_headers) {
 
 /**
  * Retrieves the links collection
- * @return Array of link hashes (e.g. [{tag: 'userInfo', target: '/riak/users/bob'}])
+ * @return Array of link hashes (e.g. [{tag: 'userInfo', target: '/buckets/users/keys/bob'}])
  */
 RiakObject.prototype.getLinks = function() {
   return this.links;
@@ -449,7 +449,7 @@ RiakObject.prototype.getLinkHeader = function() {
 
 /**
  * Adds a link to the object's link collection
- * @param link - Pointer to other object (e.g. /riak/foo/bar)
+ * @param link - Pointer to other object (e.g. /buckets/foo/keys/bar)
  * @param tag - Tag for the link (e.g. 'userInfo')
  * @param noDuplicates - Toggle duplicate checking on/off
  * @return true if added, false otherwise
@@ -660,7 +660,7 @@ RiakBucket.fromRequest = function(bucketName, client, req) {
  * @param keys Array
  */
 RiakBucket.prototype.keys = function(callback) {
-  jQuery.getJSON(this.client.baseUrl + this.name + "?keys=true", function(data){
+  jQuery.getJSON(this.client.baseUrl + "/" + this.name + "/keys?keys=true", function(data){
     callback(data.keys);
   });
 };
@@ -673,7 +673,7 @@ RiakBucket.prototype.keys = function(callback) {
  */
 RiakBucket.prototype.getProps = function(callback) {
   bucket = this;
-  jQuery.getJSON(this.client.baseUrl + this.name + "?props=true", function(data){
+  jQuery.getJSON(this.client.baseUrl + "/" + this.name + "/props", function(data){
     bucket.props = data.props;
     callback(data.props);
   });
@@ -776,7 +776,7 @@ RiakBucket.prototype.store = function(callback) {
  */
 RiakBucket.prototype.get = function(key, callback) {
   var bucket = this;
-  jQuery.ajax({url: this.client._buildPath('GET', this.name, key),
+  jQuery.ajax({url: this.client._buildPath('GET', "/" + this.name, "/keys/" + key),
     type: 'GET',
           accepts: RiakUtil.multipart_accepts(),
           dataType: 'multipart',
@@ -798,7 +798,7 @@ RiakBucket.prototype.get = function(key, callback) {
  */
 RiakBucket.prototype.get_or_new = function(key, callback) {
   var bucket = this;
-  jQuery.ajax({url: this.client._buildPath('GET', this.name, key),
+  jQuery.ajax({url: this.client._buildPath('GET', "/" + this.name, "/keys/" + key),
     type: 'GET',
           accepts: RiakUtil.multipart_accepts(),
           dataType: 'multipart',
@@ -898,13 +898,12 @@ RiakBucket.prototype._handleGetObject = function(key, req, callback, createEmpty
 
 /**
  * Entry point for interacting with Riak
- * @param baseUrl - URL for 'raw' interface (optional, default: '/riak')
+ * @param baseUrl - URL for 'raw' interface (optional, default: '/buckets')
  * @param mapredUrl - URL for map/reduce jobs (optional, default: '/mapred')
- * @param luwakUrl - URL for luwak endpoint (optional, default: '/luwak')
  */
-function RiakClient(baseUrl, mapredUrl, luwakUrl) {
+function RiakClient(baseUrl, mapredUrl) {
   if (baseUrl === undefined) {
-    baseUrl = '/riak/';
+    baseUrl = '/buckets';
   }
   else {
     if (baseUrl[0] !== '/') {
@@ -922,13 +921,6 @@ function RiakClient(baseUrl, mapredUrl, luwakUrl) {
   }
   else {
     this.mapredUrl = '/mapred';
-  }
-
-  if (luwakUrl !== undefined) {
-    this.luwakUrl = luwakUrl;
-  }
-  else {
-    this.luwakUrl = '/luwak';
   }
 }
 
@@ -994,7 +986,7 @@ RiakClient.prototype._handleGetBucket = function(bucketName, req, callback, crea
 };
 
 RiakClient.prototype._buildPath = function(method, bucket, key) {
-  var path = this.baseUrl + bucket;
+  var path = this.baseUrl + "/" + bucket;
   /* Reluctantly adding a cache breaker to each request.  FireFox
   ** sometimes caches XHR responses which triggers failures in the
   ** unit tests (and presumably real code).  See 'bypassing the cache'

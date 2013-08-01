@@ -8,7 +8,7 @@ else
   node="127.0.0.1:8098"
 fi
 
-riak_url="http://$node/riak/rekon"
+riak_url="http://$node/buckets/rekon"
 
 echo "Installing rekon to $node..."
 
@@ -38,7 +38,7 @@ for f in $(ls $base_dir); do
       ;;
   esac
 
-  curl -X PUT -H"Content-Type: $content_type" $riak_url/$f --data-binary @$base_dir/$f
+  curl -X PUT -H"Content-Type: $content_type" $riak_url/keys/$f --data-binary @$base_dir/$f
 done
 
-echo "Installed, now visit: $riak_url/go"
+echo "Installed, now visit: $riak_url/keys/go"
