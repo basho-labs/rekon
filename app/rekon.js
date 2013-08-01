@@ -99,7 +99,7 @@ rekonApp = Sammy('#container', function(){
     });
   });
 
-  this.get('#/buckets/:bucket/:key', function(context) {
+  this.get('#/buckets/:bucket/keys/:key', function(context) {
     var name   = this.params['bucket'];
     var key    = this.params['key'];
     var bucket = new RiakBucket(name, Rekon.client);
@@ -135,7 +135,7 @@ rekonApp = Sammy('#container', function(){
     });
   });
 
-  this.get('#/buckets/:bucket/:key/edit', function(context) {
+  this.get('#/buckets/:bucket/keys/:key/edit', function(context) {
     var name   = this.params['bucket'];
     var key    = this.params['key'];
     var bucket = new RiakBucket(name, Rekon.client);
