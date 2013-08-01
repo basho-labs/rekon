@@ -900,9 +900,8 @@ RiakBucket.prototype._handleGetObject = function(key, req, callback, createEmpty
  * Entry point for interacting with Riak
  * @param baseUrl - URL for 'raw' interface (optional, default: '/riak')
  * @param mapredUrl - URL for map/reduce jobs (optional, default: '/mapred')
- * @param luwakUrl - URL for luwak endpoint (optional, default: '/luwak')
  */
-function RiakClient(baseUrl, mapredUrl, luwakUrl) {
+function RiakClient(baseUrl, mapredUrl) {
   if (baseUrl === undefined) {
     baseUrl = '/riak/';
   }
@@ -922,13 +921,6 @@ function RiakClient(baseUrl, mapredUrl, luwakUrl) {
   }
   else {
     this.mapredUrl = '/mapred';
-  }
-
-  if (luwakUrl !== undefined) {
-    this.luwakUrl = luwakUrl;
-  }
-  else {
-    this.luwakUrl = '/luwak';
   }
 }
 
