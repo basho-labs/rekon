@@ -272,13 +272,17 @@ Rekon = {
     return this.locationUrl() + this.client.baseUrl;
   },
 
-  luwakUrl : function() {
-    return this.locationUrl() + this.client.luwakUrl;
-  },
-
   riakUrl : function(append) {
     if (append === undefined) {
       append = "";
+    }
+    // morph old style into new
+    parts = append.split('/');
+    if (parts.length > 1) {
+      append = "/" + parts[0] + "/keys/" + parts[1];
+    }
+    else { // some calls just have the bucket
+      append = "/" + parts[0] + "/keys";
     }
     return this.baseUrl() + append;
   },
