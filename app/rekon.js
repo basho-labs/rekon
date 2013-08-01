@@ -62,16 +62,22 @@ rekonApp = Sammy('#container', function(){
     var name   = this.params['bucket'];
     var bucket = new RiakBucket(name, Rekon.client);
 
-    header('Bucket Properties', Rekon.riakUrl(name));
+    header('Bucket Properties', Rekon.bucketUrl(name));
     breadcrumb($('<a>').attr('href', '#/buckets/' + name).text('Keys'));
     breadcrumb($('<a>').attr('href', Rekon.riakUrl(name)).attr('target', '_blank').text('Riak').addClass('action'));
 
     bucket.getProps(function(props) {
-      var pre_commit, post_commit;
-      pre_commit  = props.precommit.join(",");
-      post_commit = props.postcommit.join(",");
-      if(pre_commit === "") {pre_commit = "None";}
-      if(post_commit === "") {post_commit = "None";}
+      var pre_commit = [], post_commit = [];
+      for (var i = 0; i < props.precommit.length; i++) {
+        hook = props.precommit[i].mod + "/" + props.precommit[i].fun;
+        pre_commit.push(hook);
+      }
+      for (var i = 0; i < props.postcommit.length; i++) {
+        hook = props.postcommit[i].mod + "/" + props.postcommit[i].fun;
+        post_commit.push(hook);
+      }
+      if(pre_commit.length == 0) {pre_commit = "None";}
+      if(post_commit.length == 0) {post_commit = "None";}
       context.render('bucket-hooks.html.template', {pre_commit: pre_commit, post_commit: post_commit},
         function(){
           context.render('bucket-props.html.template', {props: props}).appendTo('#main').then(function(){
@@ -270,6 +276,10 @@ Rekon = {
 
   baseUrl : function() {
     return this.locationUrl() + this.client.baseUrl;
+  },
+
+  bucketUrl : function(bucket_name) {
+    return this.locationUrl() + this.client.baseUrl + '/' + bucket_name;
   },
 
   riakUrl : function(append) {
