@@ -13,7 +13,7 @@ rekonApp = Sammy('#container', function(){
   searchable = function(selector) {
     $('#row_search').quicksearch(selector, {selector: 'th'});
   };
-  
+
   this.use('Template');
   this.use('NestedParams');
 
@@ -27,7 +27,7 @@ rekonApp = Sammy('#container', function(){
     header('Buckets', Rekon.baseUrl());
 
     context.render('buckets.html.template').appendTo('#main');
-    
+
     Rekon.client.buckets(function(buckets) {
       bucketRows = buckets.map(function(bucket){ return {bucket: bucket};});
       context.renderEach('bucket-row.html.template', bucketRows).replace('#buckets tbody').then(
@@ -39,10 +39,10 @@ rekonApp = Sammy('#container', function(){
   this.get('#/buckets/:bucket', function(context){
     var name   = this.params['bucket'];
     var bucket = new RiakBucket(name, Rekon.client);
-    
+
     header('Bucket', Rekon.riakUrl(name));
     breadcrumb($('<a>').attr('href', '#/bucket-props/' + name).text('Props'));
-    breadcrumb($('<a>').attr('href', Rekon.riakUrl(name)).attr('target', '_blank').text('Riak').addClass('action'));
+    breadcrumb($('<a>').attr('href', Rekon.bucketUrl(name) + '/props').attr('target', '_blank').text('Props Riak').addClass('action'));
 
     context.render('bucket.html.template', {bucket: name}).appendTo('#main');
 
@@ -62,16 +62,22 @@ rekonApp = Sammy('#container', function(){
     var name   = this.params['bucket'];
     var bucket = new RiakBucket(name, Rekon.client);
 
-    header('Bucket Properties', Rekon.riakUrl(name));
+    header('Bucket Properties', Rekon.bucketUrl(name));
     breadcrumb($('<a>').attr('href', '#/buckets/' + name).text('Keys'));
     breadcrumb($('<a>').attr('href', Rekon.riakUrl(name)).attr('target', '_blank').text('Riak').addClass('action'));
 
     bucket.getProps(function(props) {
-      var pre_commit, post_commit;
-      pre_commit  = props.precommit.join(",");
-      post_commit = props.postcommit.join(",");
-      if(pre_commit === "") {pre_commit = "None";}
-      if(post_commit === "") {post_commit = "None";}
+      var pre_commit = [], post_commit = [];
+      for (var i = 0; i < props.precommit.length; i++) {
+        hook = props.precommit[i].mod + "/" + props.precommit[i].fun;
+        pre_commit.push(hook);
+      }
+      for (var i = 0; i < props.postcommit.length; i++) {
+        hook = props.postcommit[i].mod + "/" + props.postcommit[i].fun;
+        post_commit.push(hook);
+      }
+      if(pre_commit.length == 0) {pre_commit = "None";}
+      if(post_commit.length == 0) {post_commit = "None";}
       context.render('bucket-hooks.html.template', {pre_commit: pre_commit, post_commit: post_commit},
         function(){
           context.render('bucket-props.html.template', {props: props}).appendTo('#main').then(function(){
@@ -93,7 +99,7 @@ rekonApp = Sammy('#container', function(){
     });
   });
 
-  this.get('#/buckets/:bucket/:key', function(context) {
+  this.get('#/buckets/:bucket/keys/:key', function(context) {
     var name   = this.params['bucket'];
     var key    = this.params['key'];
     var bucket = new RiakBucket(name, Rekon.client);
@@ -129,7 +135,7 @@ rekonApp = Sammy('#container', function(){
     });
   });
 
-  this.get('#/buckets/:bucket/:key/edit', function(context) {
+  this.get('#/buckets/:bucket/keys/:key/edit', function(context) {
     var name   = this.params['bucket'];
     var key    = this.params['key'];
     var bucket = new RiakBucket(name, Rekon.client);
@@ -259,30 +265,6 @@ rekonApp = Sammy('#container', function(){
     });
   });
 
-  this.get('#/luwak', function(context){
-    luwak = new Luwak(Rekon.client);
-
-    header('Luwak', document.location.origin + "/luwak");
-    context.render('luwak.html.template').appendTo('#main').then(function(){
-
-      luwak.files(function(files) {
-        if (files === null) {
-          console.log('not working');
-          $('#files .pending td').html(
-          '<p><b>Luwak is not enabled.</b> Please add <code>{luwak, [{enabled, true}]}</code> to your app.config.</p>');
-        }
-        else if (files.length > 0) {
-          fileRows = files.map(function(file){ return {file:file};});
-          context.renderEach('luwak-row.html.template', fileRows).replace('#files tbody').then(
-            function() { searchable('#luwak tbody'); }
-          );
-        } else{
-          $('#files .pending td').html('<p>You have not added any files to luwak.</p>');
-        }
-      });
-    });
-  });
-
 });
 
 Rekon = {
@@ -296,13 +278,21 @@ Rekon = {
     return this.locationUrl() + this.client.baseUrl;
   },
 
-  luwakUrl : function() {
-    return this.locationUrl() + this.client.luwakUrl;
+  bucketUrl : function(bucket_name) {
+    return this.locationUrl() + this.client.baseUrl + '/' + bucket_name;
   },
 
   riakUrl : function(append) {
     if (append === undefined) {
       append = "";
+    }
+    // morph old style into new
+    parts = append.split('/');
+    if (parts.length > 1) {
+      append = "/" + parts[0] + "/keys/" + parts[1];
+    }
+    else { // some calls just have the bucket
+      append = "/" + parts[0] + "/keys";
     }
     return this.baseUrl() + append;
   },
