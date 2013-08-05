@@ -10,7 +10,7 @@ echo "Begining Install into $node..."
 echo "Downloading Rekon from Github"
 
 # Download the github tarbal to the /tmp directory
-curl -L -s https://github.com/adamhunter/rekon/tarball/master > /tmp/rekon.tar.gz
+curl -L -s https://github.com/basho/rekon/tarball/master > /tmp/rekon.tar.gz
 
 echo
 echo "Download Completed"
@@ -25,7 +25,7 @@ mkdir /tmp/extract-rekon /tmp/rekon
 # Unzip rekon into extraction directory
 tar xzf /tmp/rekon.tar.gz -C /tmp/extract-rekon
 
-# Move crazy gitub adamhunter-sha directory to standardized path
+# Move crazy gitub basho-sha directory to standardized path
 mv -f /tmp/extract-rekon/*/* /tmp/rekon/
 
 # Enable execution bit for install script
