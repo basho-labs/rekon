@@ -15,8 +15,8 @@ For something that can used against a production cluster, please see [Riak Contr
 `curl -s rekon.basho.com | sh`
 
 ### Quick Install
-Download and install using `curl -s rekon.basho.com | sh` or 
-`curl -s rekon.basho.com | node=node-addr:port sh` to specify the node.
+Download and install using `curl -s -L rekon.basho.com | sh` or 
+`curl -s -L rekon.basho.com | node=node-addr:port sh` to specify the node.
 
 ### Manual Install
 Install locally using `./install.sh` or `./install.sh node-addr:port` 
