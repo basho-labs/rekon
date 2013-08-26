@@ -12,7 +12,7 @@ For something that can used against a production cluster, please see [Riak Contr
 ## Installing
 
 ### tl;dr
-`curl -s rekon.basho.com | sh`
+`curl -s -L rekon.basho.com | sh`
 
 ### Quick Install
 Download and install using `curl -s -L rekon.basho.com | sh` or 
