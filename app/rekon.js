@@ -106,7 +106,7 @@ rekonApp = Sammy('#container', function(){
 
     header('Key', Rekon.riakUrl(name + '/' + key));
     breadcrumb($('<a>').attr('href', '#/buckets/' + name).text('Keys'));
-    breadcrumb($('<a>').attr('href', '#/buckets/' + name + '/' + key + '/edit').text('Edit').addClass('action'));
+    breadcrumb($('<a>').attr('href', '#/buckets/' + name + '/keys/' + key + '/edit').text('Edit').addClass('action'));
     breadcrumb($('<a>').attr('href', Rekon.riakUrl(name + '/' + key)).attr('target', '_blank').
       text('Riak').addClass('action'));
 
