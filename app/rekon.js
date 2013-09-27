@@ -106,7 +106,7 @@ rekonApp = Sammy('#container', function(){
 
     header('Key', Rekon.riakUrl(name + '/' + key));
     breadcrumb($('<a>').attr('href', '#/buckets/' + name).text('Keys'));
-    breadcrumb($('<a>').attr('href', '#/buckets/' + name + '/' + key + '/edit').text('Edit').addClass('action'));
+    breadcrumb($('<a>').attr('href', '#/buckets/' + name + '/keys/' + key + '/edit').text('Edit').addClass('action'));
     breadcrumb($('<a>').attr('href', Rekon.riakUrl(name + '/' + key)).attr('target', '_blank').
       text('Riak').addClass('action'));
 
@@ -190,28 +190,6 @@ rekonApp = Sammy('#container', function(){
     this.redirect('#/buckets/' + name);
   });
 
-  this.post('#/buckets/:bucket', function(context){
-    var app    = this;
-    var name   = this.params['bucket'];
-    var key    = this.params['key'] === '' ? undefined : this.params['key'];
-    var object = new RiakObject(name, key, Rekon.client, '{}', 'application/json');
-    object.store(function(status, rObject){
-      switch(status) {
-      case 'siblings':
-        alert("Oh noes! Siblings have been born and Rekon doesn't handle that yet.");
-        break;
-      case 'failure':
-        alert("There was an error creating a new Riak object.");
-        break;
-      case 'ok':
-      default:
-        console.log(rObject);
-        app.redirect('#/buckets/' + name + '/' + rObject.key);
-        break;
-      }
-    });
-  });
-
   this.post('#/bucket-props/:bucket', function(context) {
     var app      = this;
     var name     = this.params['bucket'];
@@ -224,7 +202,29 @@ rekonApp = Sammy('#container', function(){
     });
   });
 
-  this.post('#/buckets/:bucket/:key', function(context){ 
+  this.post('#/buckets/:bucket/keys', function(context) {
+    var app    = this;
+    var name   = this.params['bucket'];
+    var key    = this.params['key'] === '' ? undefined : this.params['key'];
+    var object = new RiakObject(name, key, Rekon.client, '{}', 'application/json');
+    object.store(function(status, rObject){
+      switch(status) {
+      case 'siblings':
+        alert("Oh noes! Siblings have been born and Rekon doesn't handle that yet.");
+        break;
+      case 'failed':
+        alert("There was an error creating a new Riak object.");
+        break;
+      case 'ok':
+      default:
+        console.log(rObject);
+        app.redirect('#/buckets/' + name + '/keys/' + rObject.key);
+        break;
+      }
+    });
+  });
+
+  this.post('#/buckets/:bucket/keys/:key', function(context){ 
     var app    = this;
     var name   = this.params['bucket'];
     var key    = this.params['key'];
@@ -248,7 +248,7 @@ rekonApp = Sammy('#container', function(){
           break;
         case 'ok':
         default:
-          app.redirect('#/buckets/' + name + '/' + key);
+          app.redirect('#/buckets/' + name + '/keys/' + key);
           break;
         }
       });
