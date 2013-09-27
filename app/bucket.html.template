@@ -24,7 +24,7 @@
     <tfoot> 
       <tr> 
         <td colspan='5'> 
-          <form action='#/buckets/<%= bucket %>' method='post'> 
+          <form action='#/buckets/<%= bucket %>/keys' method='post'> 
             <label for='new_key'>New Key</label> 
             <input id='new_key' name='key' type='text' /> 
             <button type='submit'>Add</button> 

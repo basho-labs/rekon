@@ -1,4 +1,4 @@
-<form action="#/buckets/<%= bucket %>/<%= key %>" method="post">
+<form action="#/buckets/<%= bucket %>/keys/<%= key %>" method="post">
 <div id="edit-key" class="screen">
   <table class='wide'> 
     <tbody> 
