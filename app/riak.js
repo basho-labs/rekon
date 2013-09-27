@@ -776,7 +776,7 @@ RiakBucket.prototype.store = function(callback) {
  */
 RiakBucket.prototype.get = function(key, callback) {
   var bucket = this;
-  jQuery.ajax({url: this.client._buildPath('GET', "/" + this.name, "/keys/" + key),
+  jQuery.ajax({url: this.client._buildPath('GET', this.name, key),
     type: 'GET',
           accepts: RiakUtil.multipart_accepts(),
           dataType: 'multipart',
@@ -798,7 +798,7 @@ RiakBucket.prototype.get = function(key, callback) {
  */
 RiakBucket.prototype.get_or_new = function(key, callback) {
   var bucket = this;
-  jQuery.ajax({url: this.client._buildPath('GET', "/" + this.name, "/keys/" + key),
+  jQuery.ajax({url: this.client._buildPath('GET', this.name, key),
     type: 'GET',
           accepts: RiakUtil.multipart_accepts(),
           dataType: 'multipart',
@@ -986,7 +986,7 @@ RiakClient.prototype._handleGetBucket = function(bucketName, req, callback, crea
 };
 
 RiakClient.prototype._buildPath = function(method, bucket, key) {
-  var path = this.baseUrl + "/" + bucket;
+  var path = this.baseUrl + "/" + bucket
   /* Reluctantly adding a cache breaker to each request.  FireFox
   ** sometimes caches XHR responses which triggers failures in the
   ** unit tests (and presumably real code).  See 'bypassing the cache'
@@ -994,7 +994,7 @@ RiakClient.prototype._buildPath = function(method, bucket, key) {
   */
   var cache_breaker = Math.floor(Math.random() * 4294967296).toString();
   if (key !== undefined) {
-    path = path + '/' + key + "?" + cache_breaker;
+    path = path + '/keys/' + key + "?" + cache_breaker;
     if (method === 'PUT') {
       path = path + '&returnbody=true';
     }
@@ -1012,25 +1012,3 @@ RiakClient.prototype._buildPath = function(method, bucket, key) {
 };
 
 /** End RiakClient internal Functions **/
-
-
-function Luwak(client) {
-  if (client === undefined) {
-    throw("Cannot construct Luwak without client reference");
-  }
-
-  this.client = client;
-}
-
-/**
- * Gets the file names for luwak, currently only uses keys=true
- * and doesn't support streaming keys.
- * @param callback function
- * callback - function(keys)
- * @param files Array
- */
-Luwak.prototype.files = function(callback) {
-  jQuery.getJSON(this.client.luwakUrl + "?keys=true").success(
-    function(data){callback(data.keys);}
-  ).error(function(){ callback(null);});
-};
