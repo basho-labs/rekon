@@ -1006,7 +1006,7 @@ RiakClient.prototype._buildPath = function(method, bucket, key) {
     }
   }
   else {
-    path = path + "?" + cache_breaker;
+    path = path + "/keys?" + cache_breaker;
     if (method === 'GET') {
       path = path + '&keys=false';
     }
