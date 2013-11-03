@@ -40,7 +40,7 @@ rm -rf /tmp/extract-rekon /tmp/rekon
 echo
 echo "Install Completed!"
 
-if [ `uname | grep darwin` ]; then
+if [ `uname | grep Darwin` ]; then
   # if we are macking OSX, use open to take the user to rekon
   echo "Opening http://$node/buckets/rekon/keys/go#/buckets"
   open "http://$node/buckets/rekon/keys/go#/buckets"
