@@ -4,7 +4,6 @@ rekonApp = Sammy('#container', function(){
 
   encode = function(v) {
     return window.encodeURIComponent(v);
-    //return window.encode("a/b/c/c".replace(/\//g, "%2f");
   };
 
   header = function(header, url) {
@@ -53,7 +52,7 @@ rekonApp = Sammy('#container', function(){
 
     bucket.keys(function(keys) {
       if (keys.length > 0) {
-        keyRows = keys.map(function(key) { return {bucket:name, key:key}; });
+        keyRows = keys.map(function(key) { return {bucket:encode(name), key:encode(key)}; });
         context.renderEach('key-row.html.template', keyRows).replace('#keys tbody').then(
           function(){ searchable('#bucket table tbody tr'); }
         );
