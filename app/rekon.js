@@ -2,6 +2,10 @@ rekonApp = Sammy('#container', function(){
 
   $container = $(this.$element);
 
+  encode = function(v) {
+    return window.encodeURIComponent(v);
+  };
+
   header = function(header, url) {
     $container.find('h1').html(header + " &ndash; <em> " + url + "</em>");
   };
@@ -29,7 +33,7 @@ rekonApp = Sammy('#container', function(){
     context.render('buckets.html.template').appendTo('#main');
 
     Rekon.client.buckets(function(buckets) {
-      bucketRows = buckets.map(function(bucket){ return {bucket: bucket};});
+      bucketRows = buckets.map(function(bucket){ return {bucket: encode(bucket)};});
       context.renderEach('bucket-row.html.template', bucketRows).replace('#buckets tbody').then(
         function(){ searchable('#buckets table tbody tr'); }
       );
@@ -37,7 +41,7 @@ rekonApp = Sammy('#container', function(){
   });
 
   this.get('#/buckets/:bucket', function(context){
-    var name   = this.params['bucket'];
+    var name   = encode(this.params['bucket']);
     var bucket = new RiakBucket(name, Rekon.client);
 
     header('Bucket', Rekon.riakUrl(name));
@@ -48,7 +52,7 @@ rekonApp = Sammy('#container', function(){
 
     bucket.keys(function(keys) {
       if (keys.length > 0) {
-        keyRows = keys.map(function(key) { return {bucket:name, key:key}; });
+        keyRows = keys.map(function(key) { return {bucket:encode(name), key:encode(key)}; });
         context.renderEach('key-row.html.template', keyRows).replace('#keys tbody').then(
           function(){ searchable('#bucket table tbody tr'); }
         );
@@ -59,7 +63,7 @@ rekonApp = Sammy('#container', function(){
   });
 
   this.get('#/bucket-props/:bucket', function(context) {
-    var name   = this.params['bucket'];
+    var name   = encode(this.params['bucket']);
     var bucket = new RiakBucket(name, Rekon.client);
 
     header('Bucket Properties', Rekon.bucketUrl(name));
@@ -100,8 +104,8 @@ rekonApp = Sammy('#container', function(){
   });
 
   this.get('#/buckets/:bucket/keys/:key', function(context) {
-    var name   = this.params['bucket'];
-    var key    = this.params['key'];
+    var name   = encode(this.params['bucket']);
+    var key    = encode(this.params['key']);
     var bucket = new RiakBucket(name, Rekon.client);
 
     header('Key', Rekon.riakUrl(name + '/' + key));
@@ -136,8 +140,8 @@ rekonApp = Sammy('#container', function(){
   });
 
   this.get('#/buckets/:bucket/keys/:key/edit', function(context) {
-    var name   = this.params['bucket'];
-    var key    = this.params['key'];
+    var name   = encode(this.params['bucket']);
+    var key    = encode(this.params['key']);
     var bucket = new RiakBucket(name, Rekon.client);
     var app    = this;
 
@@ -192,7 +196,7 @@ rekonApp = Sammy('#container', function(){
 
   this.post('#/bucket-props/:bucket', function(context) {
     var app      = this;
-    var name     = this.params['bucket'];
+    var name     = encode(this.params['bucket']);
     var bucket   = new RiakBucket(name, Rekon.client);
     var props    = Rekon.typecastBucketProps(this.params['props']);
 
@@ -204,8 +208,8 @@ rekonApp = Sammy('#container', function(){
 
   this.post('#/buckets/:bucket/keys', function(context) {
     var app    = this;
-    var name   = this.params['bucket'];
-    var key    = this.params['key'] === '' ? undefined : this.params['key'];
+    var name   = encode(this.params['bucket']);
+    var key    = encode(this.params['key'] === '' ? undefined : this.params['key']);
     var object = new RiakObject(name, key, Rekon.client, '{}', 'application/json');
     object.store(function(status, rObject){
       switch(status) {
@@ -226,8 +230,8 @@ rekonApp = Sammy('#container', function(){
 
   this.post('#/buckets/:bucket/keys/:key', function(context){ 
     var app    = this;
-    var name   = this.params['bucket'];
-    var key    = this.params['key'];
+    var name   = encode(this.params['bucket']);
+    var key    = encode(this.params['key']);
     var bucket = new RiakBucket(name, Rekon.client);
 
     bucket.get(key, function(status, object) {
