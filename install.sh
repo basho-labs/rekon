@@ -14,6 +14,9 @@ echo "Installing rekon to $node..."
 
 base_dir="`dirname $0`/app"
 
+# set allow_mult = false for rekon's bucket
+curl -X PUT -H "Content-Type: application/json" -d '{"props":{"allow_mult":false}}' $riak_url/props
+
 # loop through everything in the app directory and put in in the rekon bucket
 for f in $(ls $base_dir); do
   # echo "Uploading $f to riak"
@@ -38,7 +41,7 @@ for f in $(ls $base_dir); do
       ;;
   esac
 
-  curl -X PUT -H"Content-Type: $content_type" $riak_url/keys/$f --data-binary @$base_dir/$f
+  curl -X PUT -H "Content-Type: $content_type" $riak_url/keys/$f --data-binary @$base_dir/$f
 done
 
 echo "Installed, now visit: $riak_url/keys/go"
