@@ -52,7 +52,7 @@ rekonApp = Sammy('#container', function(){
 
     bucket.keys(function(keys) {
       if (keys.length > 0) {
-        keyRows = keys.map(function(key) { return {bucket:encode(name), key:encode(key)}; });
+        keyRows = keys.map(function(key) { return {bucket:name, key:encode(key)}; });
         context.renderEach('key-row.html.template', keyRows).replace('#keys tbody').then(
           function(){ searchable('#bucket table tbody tr'); }
         );
