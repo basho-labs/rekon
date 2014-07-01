@@ -31,3 +31,4 @@ If you have installed riak on the standard port this will be [http://127.0.0.1:8
 ## Known Issues
  * Editing a riak value does not retain 2i index information.
  * Lots of list buckets, lots of list keys.
+ * As listing buckets/keys is quite expensive, you should install Varnish to offload Rekon (see the included ./varnish directory)
