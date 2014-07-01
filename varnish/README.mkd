@@ -1,6 +1,6 @@
 #Rekon+Varnish
 
-A Varnish configuration tuned to speed up Rekon in development environments
+A Varnish configuration tuned to speed up Rekon in development environments.
 
 Rekon should ***NOT*** be used on a production cluster ***EVER***.
 
@@ -28,5 +28,6 @@ Once installed navigate to http://varnish-node-addr/buckets/rekon/keys/go.
 
 ## Notes
 
-Varnish will use 1GB RAM, and a (re)director employing hashing as its load balancing policy
-Certain (Rekon) operations will be cached differently: buckets for 1 week, keys for 1 day
+Varnish will use 1GB RAM, and a (re)director employing hashing as its load balancing policy.
+
+Certain (Rekon) operations will be cached differently: buckets for 1 week, keys for 1 day.
