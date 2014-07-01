@@ -1,0 +1,33 @@
+#Rekon+Varnish
+
+A Varnish configuration tuned to speed up Rekon in development environments.
+
+Rekon should ***NOT*** be used on a production cluster ***EVER***.
+
+
+## Installing Varnish
+
+### Quick Install
+
+Use your favourite package manager to install varnish3, then:
+
+$ sudo rsync -b ./etc-default-varnish /etc/default/varnish
+
+$ sudo rsync -b ./etc-varnish-default.vcl /etc/varnish/default.vcl
+
+
+Make sure no other (web)service runs on port 80 and start Varnish:
+
+$ sudo /etc/init.d/varnish start
+
+
+## Usage
+
+Once installed navigate to http://varnish-node-addr/buckets/rekon/keys/go.
+
+
+## Notes
+
+Varnish will use 1GB RAM, and a (re)director employing hashing as its load balancing policy.
+
+Certain (Rekon) operations will be cached differently: buckets for 1 week, keys for 1 day.

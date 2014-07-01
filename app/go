@@ -16,7 +16,7 @@
   <body>
     <div id='container'> 
       <div id='home'> 
-        <a href='#'>rekon <code>1.0.1</code></a> 
+        <a href='#'>rekon <code>1.0.2</code></a> 
       </div> 
       <div id='content'> 
         <h1></h1>
