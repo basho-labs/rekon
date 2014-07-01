@@ -12,6 +12,7 @@ Rekon should ***NOT*** be used on a production cluster ***EVER***.
 Use your favourite package manager to install varnish3, then
 
 $ sudo rsync -b ./etc-default-varnish /etc/default/varnish
+
 $ sudo rsync -b ./etc-varnish-default.vcl /etc/varnish/default.vcl
 
 Make sure no other (web)service runs on port 80 and start Varnish
