@@ -92,7 +92,7 @@ rekonApp = Sammy('#container', function(){
             /* bind the limit based off of the n_val */
             Rekon.capControlsSelector();
             /* reselect cap control vals based off of nval */
-            for(i=0; i<$selects.length;i++) { 
+            for(i=0; i<$selects.length;i++) {
               $select = $($selects[i]);
               $select.val($select.attr('data-select-value'));
             }
@@ -132,7 +132,12 @@ rekonApp = Sammy('#container', function(){
         value = JSON.stringify(object.body, null, 4);
         break;
       default:
-        value = object.body;
+        //JSON with encoding
+        if (object.contentType.indexOf('application/json; charset=') == 0) {
+          value = JSON.stringify(object.body, null, 4);
+        } else {
+          value = object.body;
+        }
         break;
       }
       context.render('value-pre.html.template', {value: value}).appendTo('#value');
@@ -166,7 +171,11 @@ rekonApp = Sammy('#container', function(){
         value = JSON.stringify(object.body, null, 4);
         break;
       default:
-        value = object.body;
+        if (object.contentType.indexOf('application/json; charset=') == 0) {
+          value = JSON.stringify(object.body, null, 4);
+        } else {
+          value = object.body;
+        }
         break;
       }
       context.render('edit-key-content-type.html.template', {object: object}, function(html){
@@ -228,7 +237,7 @@ rekonApp = Sammy('#container', function(){
     });
   });
 
-  this.post('#/buckets/:bucket/keys/:key', function(context){ 
+  this.post('#/buckets/:bucket/keys/:key', function(context){
     var app    = this;
     var name   = encode(this.params['bucket']);
     var key    = encode(this.params['key']);
@@ -335,12 +344,12 @@ Rekon = {
         if (value) {
           $select.val($select.find('option:last').val());
         }
-      } 
+      }
       else if (endVal < nVal) {
         while(endVal < nVal) {
           endVal++;
           $('<option>').val(endVal).html(endVal).appendTo($select);
-        } 
+        }
       }
     });
   }
