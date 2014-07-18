@@ -18,6 +18,15 @@ rekonApp = Sammy('#container', function(){
     $('#row_search').quicksearch(selector, {selector: 'th'});
   };
 
+  normalizeContentType = function(contentType) {
+    if (contentType.indexOf('application/json; charset=') == 0) {
+      value = 'application/json';
+    } else {
+      value = contentType;
+    }
+    return value;
+  }
+
   this.use('Template');
   this.use('NestedParams');
 
@@ -121,7 +130,9 @@ rekonApp = Sammy('#container', function(){
         context.render('key-meta.html.template', {object: object}).appendTo('#key tbody');
       }).appendTo('#key tbody');
 
-      switch(object.contentType) {
+      contentType = normalizeContentType(object.contentType);
+
+      switch(contentType) {
       case 'image/png':
       case 'image/jpeg':
       case 'image/jpg':
@@ -129,15 +140,11 @@ rekonApp = Sammy('#container', function(){
         context.render('value-image.html.template', {bucket: name, key: key}).appendTo('#value');
         return;
       case 'application/json':
-        value = JSON.stringify(object.body, null, 4);
-        break;
+        value = hljs.highlightAuto(JSON.stringify(object.body, null, 4)).value;
+        context.render('value-json.html.template', {value: value}).appendTo('#value');
+        return;
       default:
-        //JSON with encoding
-        if (object.contentType.indexOf('application/json; charset=') == 0) {
-          value = JSON.stringify(object.body, null, 4);
-        } else {
-          value = object.body;
-        }
+        value = object.body;
         break;
       }
       context.render('value-pre.html.template', {value: value}).appendTo('#value');
@@ -159,7 +166,10 @@ rekonApp = Sammy('#container', function(){
     context.render('edit-key.html.template', {bucket: name, key: key}).appendTo('#main');
 
     bucket.get(key, function(status, object) {
-      switch(object.contentType) {
+
+      contentType = normalizeContentType(object.contentType);
+
+      switch(contentType) {
       case 'image/png':
       case 'image/jpeg':
       case 'image/jpg':
@@ -171,11 +181,7 @@ rekonApp = Sammy('#container', function(){
         value = JSON.stringify(object.body, null, 4);
         break;
       default:
-        if (object.contentType.indexOf('application/json; charset=') == 0) {
-          value = JSON.stringify(object.body, null, 4);
-        } else {
-          value = object.body;
-        }
+        value = object.body;
         break;
       }
       context.render('edit-key-content-type.html.template', {object: object}, function(html){
