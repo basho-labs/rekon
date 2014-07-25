@@ -122,7 +122,7 @@ var RiakUtil = function() {
           } else if (hdr === 'Link') {
             sibling.linkHeader = val;
           }
-          idx += 2;          
+          idx += 2;
   } else { // Idx points to \r\n at end of headers, grab the body
           last_idx = idx + 2;
           idx = nextChunk(nextBoundary, last_idx + 2);
@@ -130,8 +130,8 @@ var RiakUtil = function() {
           siblings.push(sibling);
           sibling = {};
           idx += nextBoundary.length;
-          if (prefixAt(idx, "--\r\n")) // --boundary-- is the end of 
-            break; 
+          if (prefixAt(idx, "--\r\n")) // --boundary-- is the end of
+            break;
           else if (prefixAt(idx, "\r\n"))
             idx += 2;
           else
@@ -347,6 +347,7 @@ RiakObject.fromRequest = function(bucket, key, client, req) {
 
   all_headers = req.getAllResponseHeaders();
   retval.setIndexes(all_headers);
+  retval.setMetadata(all_headers);
   return retval;
 };
 
@@ -420,6 +421,21 @@ RiakObject.prototype.setIndexes = function(all_headers) {
     }
   }
   this.indexes = results
+};
+
+RiakObject.prototype.setMetadata = function(all_headers) {
+  headers_by_line = all_headers.split('\n');
+  results = {}
+  for (i = 0; i < headers_by_line.length; i++) {
+    var header = headers_by_line[i];
+    if (header.indexOf('X-Riak-Meta-') == 0) {
+      colon = header.indexOf(':');
+      k = header.substring('X-Riak-Meta-'.length, colon);
+      v = header.substring(colon + 1, header.length )
+      results[k] = v;
+    }
+  }
+  this.metadata = results
 };
 
 /**
@@ -613,7 +629,7 @@ RiakObject.prototype._store = function(req, callback) {
         var siblings = [];
       for (var i = 0; i < siblingData.length; i++) {
         var sd = siblingData[i];
-        var sib = RiakObject.fromMultipart(thisObject.bucket, thisObject.key, 
+        var sib = RiakObject.fromMultipart(thisObject.bucket, thisObject.key,
                                            thisObject.client, vclock, sd);
         siblings.push(sib);
       }
@@ -764,7 +780,7 @@ RiakBucket.prototype.store = function(callback) {
     data: JSON.stringify(currentProps),
     contentType: 'application/json',
     dataType: 'text',
-    beforeSend: function(req) { 
+    beforeSend: function(req) {
               req.setRequestHeader('X-Riak-ClientId', bucket.client.clientId);
           },
     complete: function(req, statusText) { bucket._store(req, callback); } });
@@ -888,7 +904,7 @@ RiakBucket.prototype._handleGetObject = function(key, req, callback, createEmpty
       var siblings = [];
       for (var i = 0; i < siblingData.length; i++) {
         var sd = siblingData[i];
-        var sib = RiakObject.fromMultipart(thisBucket.name, key, 
+        var sib = RiakObject.fromMultipart(thisBucket.name, key,
                                            thisBucket.client, vclock, sd);
         siblings.push(sib);
       }
@@ -946,15 +962,15 @@ RiakClient.prototype.bucket = function(bucket, callback) {
     type: 'GET',
     contentType: 'application/json',
     dataType: 'text',
-    beforeSend: function(req) { 
+    beforeSend: function(req) {
               req.setRequestHeader('X-Riak-ClientId', this.clientId);
           },
     complete: function(req, statusText) { client._handleGetBucket(bucket, req, callback, false); } });
 };
 
-/** 
+/**
 * Fetches all buckets from a node
-* @param callback Function to call when op completes 
+* @param callback Function to call when op completes
 */
 RiakClient.prototype.buckets = function(callback) {
   var client = this;
@@ -969,7 +985,7 @@ RiakClient.prototype.buckets = function(callback) {
 };
 
 RiakClient.prototype._handleGetBuckets = function(data, callback) {
-  if ( callback === undefined) { return; } 
+  if ( callback === undefined) { return; }
   var buckets = [];
   if (data.buckets !== undefined) {
     buckets = data.buckets;
