@@ -20,11 +20,11 @@ rekonApp = Sammy('#container', function(){
 
   normalizeContentType = function(contentType) {
     if (contentType.indexOf('application/json; charset=') == 0) {
-      value = 'application/json';
+      normalized = 'application/json';
     } else {
-      value = contentType;
+      normalized = contentType;
     }
-    return value;
+    return normalized;
   }
 
   this.use('Template');
