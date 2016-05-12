@@ -1,13 +1,15 @@
 #Rekon
 
+Rekon should ***NOT*** be used ***EVER***.  This repository will eventually be deleted.
+
 A visual browser for Basho's data store, riak, built as a riak app.
 
 This browser uses list buckets and list keys; operations that are known to
 be expensive on any bucket with any sufficient number of keys.  As such; this tool is intended for use within ***local (application development)*** environments only.
 
-Rekon should ***NOT*** be used on a production cluster ***EVER***.
+Rekon should ***NOT*** be used ***EVER***.  This repository will eventually be deleted.
 
-For something that can used against a production cluster, please see [Riak Control](https://github.com/basho/riak_control).
+For something more current, please see [Riak Explorer](https://github.com/basho-labs/riak_explorer).
 
 ## Installing
 
