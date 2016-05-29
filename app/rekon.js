@@ -18,6 +18,15 @@ rekonApp = Sammy('#container', function(){
     $('#row_search').quicksearch(selector, {selector: 'th'});
   };
 
+  normalizeContentType = function(contentType) {
+    if (contentType.indexOf('application/json; charset=') == 0) {
+      normalized = 'application/json';
+    } else {
+      normalized = contentType;
+    }
+    return normalized;
+  }
+
   this.use('Template');
   this.use('NestedParams');
 
@@ -92,7 +101,7 @@ rekonApp = Sammy('#container', function(){
             /* bind the limit based off of the n_val */
             Rekon.capControlsSelector();
             /* reselect cap control vals based off of nval */
-            for(i=0; i<$selects.length;i++) { 
+            for(i=0; i<$selects.length;i++) {
               $select = $($selects[i]);
               $select.val($select.attr('data-select-value'));
             }
@@ -121,7 +130,9 @@ rekonApp = Sammy('#container', function(){
         context.render('key-meta.html.template', {object: object}).appendTo('#key tbody');
       }).appendTo('#key tbody');
 
-      switch(object.contentType) {
+      contentType = normalizeContentType(object.contentType);
+
+      switch(contentType) {
       case 'image/png':
       case 'image/jpeg':
       case 'image/jpg':
@@ -129,8 +140,9 @@ rekonApp = Sammy('#container', function(){
         context.render('value-image.html.template', {bucket: name, key: key}).appendTo('#value');
         return;
       case 'application/json':
-        value = JSON.stringify(object.body, null, 4);
-        break;
+        value = hljs.highlightAuto(JSON.stringify(object.body, null, 4)).value;
+        context.render('value-json.html.template', {value: value}).appendTo('#value');
+        return;
       default:
         value = object.body;
         break;
@@ -154,7 +166,10 @@ rekonApp = Sammy('#container', function(){
     context.render('edit-key.html.template', {bucket: name, key: key}).appendTo('#main');
 
     bucket.get(key, function(status, object) {
-      switch(object.contentType) {
+
+      contentType = normalizeContentType(object.contentType);
+
+      switch(contentType) {
       case 'image/png':
       case 'image/jpeg':
       case 'image/jpg':
@@ -228,7 +243,7 @@ rekonApp = Sammy('#container', function(){
     });
   });
 
-  this.post('#/buckets/:bucket/keys/:key', function(context){ 
+  this.post('#/buckets/:bucket/keys/:key', function(context){
     var app    = this;
     var name   = encode(this.params['bucket']);
     var key    = encode(this.params['key']);
@@ -335,12 +350,12 @@ Rekon = {
         if (value) {
           $select.val($select.find('option:last').val());
         }
-      } 
+      }
       else if (endVal < nVal) {
         while(endVal < nVal) {
           endVal++;
           $('<option>').val(endVal).html(endVal).appendTo($select);
-        } 
+        }
       }
     });
   }

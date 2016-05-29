@@ -299,7 +299,7 @@ function RiakObject(bucketName, key, client, body, contentType, vclock) {
   else {
     this.contentType = contentType;
   }
-  if (contentType === 'application/json') {
+  if (contentType === 'application/json' || contentType.indexOf('application/json; charset=') == 0) {
     if (body !== undefined) {
       try {
         this.body = JSON.parse(body);
